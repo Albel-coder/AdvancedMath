@@ -23,7 +23,7 @@ public:
     }
 
     // Arithmetic operators
-    Complex operator+(const Complex& OtherNum) const 
+    Complex operator+(const Complex& OtherNum) const
     {
         return Complex(Real + OtherNum.Real, Imag + OtherNum.Imag);
     }
@@ -110,13 +110,13 @@ public:
     }
 
     // Unary operators
-    Complex operator+() const 
-    { 
-        return *this; 
+    Complex operator+() const
+    {
+        return *this;
     }
-    Complex operator-() const 
-    { 
-        return Complex(-Real, -Imag); 
+    Complex operator-() const
+    {
+        return Complex(-Real, -Imag);
     }
 
     // Access Methods
@@ -130,40 +130,40 @@ public:
     }
 
     // Additional Methods
-    double Magnitude() const 
+    double Magnitude() const
     {
         return std::sqrt(Real * Real + Imag * Imag);
     }
 
-    double Phase() const 
+    double Phase() const
     {
         return std::atan2(Imag, Real);
     }
 
-    Complex Conjugate() const 
+    Complex Conjugate() const
     {
         return Complex(Real, -Imag);
     }
 
     // Convert to trigonometric form
-    ComplexTrigonometric toTrigonometric() const 
+    ComplexTrigonometric toTrigonometric() const
     {
         return ComplexTrigonometric::FromAlgebraic(Real, Imag);
     }
 
     // Creation from trigonometric form
-    static Complex FromTrigonometric(const ComplexTrigonometric& CT) 
+    static Complex FromTrigonometric(const ComplexTrigonometric& CT)
     {
         return Complex(CT.toReal(), CT.toImaginary());
     }
 
     // Operations with trigonometric numbers
-    Complex operator*(const ComplexTrigonometric& OtherNumber) const 
+    Complex operator*(const ComplexTrigonometric& OtherNumber) const
     {
         return *this * FromTrigonometric(OtherNumber);
     }
 
-    Complex operator/(const ComplexTrigonometric& OtherNumber) const 
+    Complex operator/(const ComplexTrigonometric& OtherNumber) const
     {
         return *this / FromTrigonometric(OtherNumber);
     }
@@ -174,7 +174,7 @@ public:
 };
 
 // Streaming output
-std::ostream& operator<<(std::ostream& Output, const Complex& C) 
+std::ostream& operator<<(std::ostream& Output, const Complex& C)
 {
     Output << "(" << C.Real;
     if (C.Imag >= 0)
@@ -185,13 +185,13 @@ std::ostream& operator<<(std::ostream& Output, const Complex& C)
 }
 
 // Stream input
-std::istream& operator>>(std::istream& Input, Complex& C) 
+std::istream& operator>>(std::istream& Input, Complex& C)
 {
     char Plus;
     char i;
     char Paren;
     Input >> Paren >> C.Real >> Plus >> C.Imag >> i >> Paren;
-    if (Plus == '-') 
+    if (Plus == '-')
     {
         C.Imag = -C.Imag;
         Input >> i;
@@ -211,16 +211,17 @@ public:
 
     // Constructors
     ComplexTrigonometric(double mag = 0.0, double ang = 0.0)
-        : Magnitude(mag), Angle(ang) { }
+        : Magnitude(mag), Angle(ang) {
+    }
 
     // Creation from polar coordinates
-    static ComplexTrigonometric FromPolar(double Mag, double Ang) 
+    static ComplexTrigonometric FromPolar(double Mag, double Ang)
     {
         return ComplexTrigonometric(Mag, Ang);
     }
 
     // Creating from polar coordinates with an angle in degrees
-    static ComplexTrigonometric fromPolarDegrees(double Mag, double Degrees) 
+    static ComplexTrigonometric fromPolarDegrees(double Mag, double Degrees)
     {
         return ComplexTrigonometric(Mag, Degrees * PI / 180.0);
     }
@@ -232,34 +233,34 @@ public:
     static ComplexTrigonometric FromComplex(const Complex& C);
 
     // Getters
-    double getMagnitude() const 
-    { 
-        return Magnitude; 
+    double getMagnitude() const
+    {
+        return Magnitude;
     }
-    double getAngle() const 
-    { 
-        return Angle; 
+    double getAngle() const
+    {
+        return Angle;
     }
-    double getAngleDegrees() const 
-    { 
-        return Angle * 180.0 / PI; 
+    double getAngleDegrees() const
+    {
+        return Angle * 180.0 / PI;
     }
 
     // Setters
-    void setMagnitude(double Mag) 
-    { 
-        Magnitude = Mag; 
+    void setMagnitude(double Mag)
+    {
+        Magnitude = Mag;
     }
-    void setAngle(double Ang) 
-    { 
-        Angle = Ang; 
+    void setAngle(double Ang)
+    {
+        Angle = Ang;
     }
     void setAngleDegrees(double Degrees) {
         Angle = Degrees * PI / 180.0;
     }
 
     // Arithmetic operations in trigonometric form
-    ComplexTrigonometric operator*(const ComplexTrigonometric& Other) const 
+    ComplexTrigonometric operator*(const ComplexTrigonometric& Other) const
     {
         // Multiplication: modules are multiplied, angles are added
         return ComplexTrigonometric(
@@ -268,7 +269,7 @@ public:
         );
     }
 
-    ComplexTrigonometric operator/(const ComplexTrigonometric& Other) const 
+    ComplexTrigonometric operator/(const ComplexTrigonometric& Other) const
     {
         // Division: modules are divided, angles are subtracted
         if (Other.Magnitude == 0.0) {
@@ -280,7 +281,7 @@ public:
         );
     }
 
-    ComplexTrigonometric operator^(int32_t Power) const 
+    ComplexTrigonometric operator^(int32_t Power) const
     {
         // Exponentiation: modulus to the power, angle multiplied by the power
         return ComplexTrigonometric(
@@ -289,7 +290,7 @@ public:
         );
     }
 
-    ComplexTrigonometric operator^(double Power) const 
+    ComplexTrigonometric operator^(double Power) const
     {
         // Raising to a real power
         return ComplexTrigonometric(
@@ -299,9 +300,9 @@ public:
     }
 
     // Root extraction
-    std::vector<ComplexTrigonometric> roots(int Number) const 
+    std::vector<ComplexTrigonometric> roots(int Number) const
     {
-        if (Number <= 0) 
+        if (Number <= 0)
         {
             throw std::runtime_error("Root degree must be positive");
         }
@@ -309,7 +310,7 @@ public:
         std::vector<ComplexTrigonometric> result;
         double root_magnitude = std::pow(Magnitude, 1.0 / Number);
 
-        for (int k = 0; k < Number; ++k) 
+        for (int k = 0; k < Number; ++k)
         {
             double root_angle = (Angle + 2 * 3.1415 * k) / Number;
             result.emplace_back(root_magnitude, root_angle);
@@ -319,31 +320,31 @@ public:
     }
 
     // Conversion to algebraic form
-    double toReal() const 
+    double toReal() const
     {
         return Magnitude * std::cos(Angle);
     }
 
-    double toImaginary() const 
+    double toImaginary() const
     {
         return Magnitude * std::sin(Angle);
     }
 
     // Obtaining the conjugate number
-    ComplexTrigonometric conjugate() const 
+    ComplexTrigonometric conjugate() const
     {
         return ComplexTrigonometric(Magnitude, -Angle);
     }
 
     // Normalize an angle to the range [-π, π]
-    ComplexTrigonometric normalized() const 
+    ComplexTrigonometric normalized() const
     {
         double normalized_angle = std::fmod(Angle, 2 * PI);
-        if (normalized_angle > PI) 
+        if (normalized_angle > PI)
         {
             normalized_angle -= 2 * PI;
         }
-        else if (normalized_angle <= -PI) 
+        else if (normalized_angle <= -PI)
         {
             normalized_angle += 2 * PI;
         }
@@ -351,14 +352,14 @@ public:
     }
 
     // String representation
-    std::string toString() const 
+    std::string toString() const
     {
         return std::to_string(Magnitude) + "(cos(" +
             std::to_string(Angle) + ") + i*sin(" +
             std::to_string(Angle) + "))";
     }
 
-    std::string toStringDegrees() const 
+    std::string toStringDegrees() const
     {
         return std::to_string(Magnitude) + "(cos(" +
             std::to_string(getAngleDegrees()) + "°) + i*sin(" +
@@ -366,7 +367,7 @@ public:
     }
 
     // Comparison Operators
-    bool operator==(const ComplexTrigonometric& other) const 
+    bool operator==(const ComplexTrigonometric& other) const
     {
         auto norm1 = normalized();
         auto norm2 = other.normalized();
@@ -374,17 +375,156 @@ public:
             std::abs(norm1.Angle - norm2.Angle) < 1e-10;
     }
 
-    bool operator!=(const ComplexTrigonometric& other) const 
+    bool operator!=(const ComplexTrigonometric& other) const
     {
         return !(*this == other);
     }
 };
 
 // Inference operator
-std::ostream& operator<<(std::ostream& Output, const ComplexTrigonometric& CT) 
+std::ostream& operator<<(std::ostream& Output, const ComplexTrigonometric& CT)
 {
     Output << CT.toString();
     return Output;
+}
+
+class Homothety 
+{
+private:
+
+    Complex Center;
+    double Coefficient;
+
+public:
+    // Constructors
+    Homothety(const Complex& C = Complex(0.0, 0.0), double K = 1.0)
+        : Center(C), Coefficient(K) {}
+
+    Homothety(double CenterX, double CenterY, double k)
+        : Center(CenterX, CenterY), Coefficient(k) {}
+
+    // Getters
+    Complex GetCenter() const 
+    {
+        return Center; 
+    }
+    double GetCoefficient() const 
+    {
+        return Coefficient; 
+    }
+
+    // Setters
+    void SetCenter(const Complex& c) 
+    { 
+        Center = c; 
+    }
+    void SetCenter(double x, double y) 
+    { 
+        Center = Complex(x, y); 
+    }
+    void SetCoefficient(double k) 
+    { 
+        Coefficient = k; 
+    }
+
+    // Apply homothety to a point
+    Complex ApplyTo(const Complex& point) const 
+    {
+        return Center + (point - Center) * Coefficient;
+    }
+
+    // Apply homothety to a trigonometric complex number
+    ComplexTrigonometric ApplyTo(const ComplexTrigonometric& point) const 
+    {
+        Complex algebraicPoint = Complex::FromTrigonometric(point);
+        Complex result = ApplyTo(algebraicPoint);
+        return result.toTrigonometric();
+    }
+
+    // Composition of homotheties (now named more clearly)
+    Homothety ComposeWith(const Homothety& other) const 
+    {
+        // H2 ∘ H1 = Homothety with new center and coefficient
+        double newCoefficient = Coefficient * other.Coefficient;
+        Complex newCenter = Center + (other.Center - Center) * (Coefficient / (1 - Coefficient * other.Coefficient));
+
+        return Homothety(newCenter, newCoefficient);
+    }
+
+    // Inverse homothety
+    Homothety getInverse() const 
+    {
+        if (Coefficient == 0.0) 
+        {
+            throw std::runtime_error("Homothety with coefficient 0 is not invertible");
+        }
+        return Homothety(Center, 1.0 / Coefficient);
+    }
+
+    // Power of homothety
+    Homothety raisedTo(int Number) const 
+    {
+        return Homothety(Center, std::pow(Coefficient, Number));
+    }
+
+    // Comparison operators
+    bool operator==(const Homothety& OtherNumber) const {
+        return Center == OtherNumber.Center &&
+            std::abs(Coefficient - OtherNumber.Coefficient) < 1e-10;
+    }
+
+    bool operator!=(const Homothety& OtherNumber) const 
+    {
+        return !(*this == OtherNumber);
+    }
+
+    // String representation
+    std::string toString() const 
+    {
+        std::string realStr = std::to_string(Center.GetReal());
+        std::string imagStr = std::to_string(Center.GetImag());
+        std::string kStr = std::to_string(Coefficient);
+
+        // Remove trailing zeros
+        realStr = realStr.substr(0, realStr.find('.') + 3);
+        imagStr = imagStr.substr(0, imagStr.find('.') + 3);
+        kStr = kStr.substr(0, kStr.find('.') + 3);
+
+        return "Homothety(center=" + realStr +
+            (Center.GetImag() >= 0 ? "+" : "") + imagStr + "i, k=" + kStr + ")";
+    }
+
+    // Create homothety from two pairs of points (A->A', B->B')
+    static Homothety fromTwoPairs(const Complex& A, const Complex& A1,
+        const Complex& B, const Complex& B1) 
+    {
+        Complex AB = B - A;
+        Complex A1B1 = B1 - A1;
+
+        if (AB.Magnitude() < 1e-10) 
+        {
+            throw std::runtime_error("Points A and B are too close");
+        }
+
+        // k is the ratio of distances
+        double k = A1B1.Magnitude() / AB.Magnitude();
+
+        // Determine sign based on orientation
+        double crossProduct = AB.GetReal() * A1B1.GetImag() - AB.GetImag() * A1B1.GetReal();
+        if (crossProduct < 0) k = -k;
+
+        // Calculate center from the equation: A1 = center + k*(A - center)
+        // => center = (A1 - k*A) / (1 - k)
+        Complex center = (A1 - A * k) / (1 - k);
+
+        return Homothety(center, k);
+    }
+};
+
+// Output operator
+std::ostream& operator<<(std::ostream& os, const Homothety& h) {
+    os << h.toString();
+    return os;
 }
 
 int main()
@@ -416,6 +556,42 @@ int main()
 
     std::cout << "Algebraic form: " << algebraic << "\n";
     std::cout << "Back to trigonometric: " << backToTrig << "\n";
+
+    // Testing Homothety class
+    std::cout << "\n=== Testing Homothety ===" << "\n";
+
+    // Create a homothety with center at (1,1) and coefficient 2
+    Homothety H1(Complex(1.0, 1.0), 2.0);
+    std::cout << "H1 = " << H1 << "\n";
+
+    // Test applying homothety to a point
+    Complex point(3.0, 2.0);
+    Complex transformed = H1.ApplyTo(point);
+    std::cout << "H1.applyTo(" << point << ") = " << transformed << "\n";
+
+    // Test composition of homotheties
+    Homothety H2(Complex(0.0, 0.0), 0.5);
+    Homothety H3 = H1.ComposeWith(H2);
+    std::cout << "H1.composeWith(H2) = " << H3 << "\n";
+
+    // Test inverse homothety
+    Homothety H1_inv = H1.getInverse();
+    std::cout << "H1.getInverse() = " << H1_inv << "\n";
+
+    // Test power of homothety
+    Homothety H1_pow = H1.raisedTo(2);
+    std::cout << "H1.raisedTo(2) = " << H1_pow << "\n";
+
+    // Test creating homothety from point pairs
+    Complex A(1.0, 1.0), A1(3.0, 3.0);  // A -> A1
+    Complex B(2.0, 0.0), B1(4.0, -2.0); // B -> B1
+
+    Homothety H4 = Homothety::fromTwoPairs(A, A1, B, B1);
+    std::cout << "Homothety from pairs: " << H4 << "\n";
+
+    // Verify the homothety works correctly
+    std::cout << "H4.applyTo(A) = " << H4.ApplyTo(A) << " (should be " << A1 << ")" << "\n";
+    std::cout << "H4.applyTo(B) = " << H4.ApplyTo(B) << " (should be " << B1 << ")" << "\n";
 
     return 0;
 }
