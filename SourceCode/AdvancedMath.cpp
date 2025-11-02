@@ -1,4 +1,4 @@
-﻿#include <iostream>
+﻿﻿#include <iostream>
 #include <cmath>
 #include <numbers>
 #include <ostream>
@@ -6,199 +6,6 @@
 #include <vector>
 
 const double PI = 3.1415926535897932;
-
-class Complex
-{
-private:
-
-    double Real;
-    double Imag;
-
-public:
-
-    Complex(double r = 0.0, double i = 0.0)
-    {
-        Real = r;
-        Imag = i;
-    }
-
-    // Arithmetic operators
-    Complex operator+(const Complex& OtherNum) const
-    {
-        return Complex(Real + OtherNum.Real, Imag + OtherNum.Imag);
-    }
-
-    Complex operator-(const Complex& OtherNum) const
-    {
-        return Complex(Real - OtherNum.Real, Imag - OtherNum.Imag);
-    }
-
-    Complex operator*(const Complex& OtherNum) const
-    {
-        return Complex(Real * OtherNum.Real - Imag * OtherNum.Imag, Real * OtherNum.Imag + Imag * OtherNum.Real);
-    }
-
-    Complex operator/(const Complex& OtherNum) const
-    {
-        double RealResult = 0.0, ImagResult = 0.0;
-
-        RealResult = (Real * OtherNum.Real + Imag * OtherNum.Imag) / (OtherNum.Real * OtherNum.Real + OtherNum.Imag * OtherNum.Imag);
-        ImagResult = (OtherNum.Real * Imag - Real * OtherNum.Imag) / (OtherNum.Real * OtherNum.Real + OtherNum.Imag * OtherNum.Imag);
-
-        return Complex(RealResult, ImagResult);
-    }
-
-    // Comparison Operators
-    bool operator==(const Complex& OtherNum) const
-    {
-        if (Real == OtherNum.Real && Imag == OtherNum.Imag)
-        {
-            return true;
-        }
-        else
-        {
-            return false;
-        }
-    }
-
-    bool operator!=(const Complex& OtherNum) const
-    {
-        if (Real != OtherNum.Real || Imag != OtherNum.Imag)
-        {
-            return true;
-        }
-        else
-        {
-            return false;
-        }
-    }
-
-    // Assignment Operators
-    Complex& operator=(const Complex& OtherNum)
-    {
-        Real = OtherNum.Real;
-        Imag = OtherNum.Imag;
-        return *this;
-    }
-
-    Complex& operator+=(const Complex& OtherNum)
-    {
-        Real += OtherNum.Real;
-        Imag += OtherNum.Imag;
-        return *this;
-    }
-
-    Complex& operator-=(const Complex& OtherNum)
-    {
-        Real -= OtherNum.Real;
-        Imag -= OtherNum.Imag;
-        return *this;
-    }
-
-    Complex& operator*=(const Complex& OtherNum)
-    {
-        double NewReal = Real * OtherNum.Real - Imag * OtherNum.Imag;
-        double NewImag = Real * OtherNum.Imag + Imag * OtherNum.Real;
-        Real = NewReal;
-        Imag = NewImag;
-        return *this;
-    }
-
-    Complex& operator/=(const Complex& OtherNum) {
-        *this = *this / OtherNum;
-        return *this;
-    }
-
-    // Unary operators
-    Complex operator+() const
-    {
-        return *this;
-    }
-    Complex operator-() const
-    {
-        return Complex(-Real, -Imag);
-    }
-
-    // Access Methods
-    double GetReal() const
-    {
-        return Real;
-    }
-    double GetImag() const
-    {
-        return Imag;
-    }
-
-    // Additional Methods
-    double Magnitude() const
-    {
-        return std::sqrt(Real * Real + Imag * Imag);
-    }
-
-    double Phase() const
-    {
-        return std::atan2(Imag, Real);
-    }
-
-    Complex Conjugate() const
-    {
-        return Complex(Real, -Imag);
-    }
-
-    // Convert to trigonometric form
-    ComplexTrigonometric toTrigonometric() const
-    {
-        return ComplexTrigonometric::FromAlgebraic(Real, Imag);
-    }
-
-    // Creation from trigonometric form
-    static Complex FromTrigonometric(const ComplexTrigonometric& CT)
-    {
-        return Complex(CT.toReal(), CT.toImaginary());
-    }
-
-    // Operations with trigonometric numbers
-    Complex operator*(const ComplexTrigonometric& OtherNumber) const
-    {
-        return *this * FromTrigonometric(OtherNumber);
-    }
-
-    Complex operator/(const ComplexTrigonometric& OtherNumber) const
-    {
-        return *this / FromTrigonometric(OtherNumber);
-    }
-
-    // Friendly functions for streaming I/O
-    friend std::ostream& operator<<(std::ostream& Output, const Complex& C);
-    friend std::istream& operator>>(std::istream& Input, Complex& C);
-};
-
-// Streaming output
-std::ostream& operator<<(std::ostream& Output, const Complex& C)
-{
-    Output << "(" << C.Real;
-    if (C.Imag >= 0)
-        Output << "+" << C.Imag << "i)";
-    else
-        Output << C.Imag << "i)";
-    return Output;
-}
-
-// Stream input
-std::istream& operator>>(std::istream& Input, Complex& C)
-{
-    char Plus;
-    char i;
-    char Paren;
-    Input >> Paren >> C.Real >> Plus >> C.Imag >> i >> Paren;
-    if (Plus == '-')
-    {
-        C.Imag = -C.Imag;
-        Input >> i;
-    }
-    if (i != 'i') Input.setstate(std::ios::failbit);
-    return Input;
-}
 
 class ComplexTrigonometric {
 private:
@@ -388,7 +195,7 @@ std::ostream& operator<<(std::ostream& Output, const ComplexTrigonometric& CT)
     return Output;
 }
 
-class Homothety 
+class Homothety
 {
 private:
 
@@ -398,43 +205,45 @@ private:
 public:
     // Constructors
     Homothety(const Complex& C = Complex(0.0, 0.0), double K = 1.0)
-        : Center(C), Coefficient(K) {}
+        : Center(C), Coefficient(K) {
+    }
 
     Homothety(double CenterX, double CenterY, double k)
-        : Center(CenterX, CenterY), Coefficient(k) {}
+        : Center(CenterX, CenterY), Coefficient(k) {
+    }
 
     // Getters
-    Complex GetCenter() const 
+    Complex GetCenter() const
     {
-        return Center; 
+        return Center;
     }
-    double GetCoefficient() const 
+    double GetCoefficient() const
     {
-        return Coefficient; 
+        return Coefficient;
     }
 
     // Setters
-    void SetCenter(const Complex& c) 
-    { 
-        Center = c; 
+    void SetCenter(const Complex& c)
+    {
+        Center = c;
     }
-    void SetCenter(double x, double y) 
-    { 
-        Center = Complex(x, y); 
+    void SetCenter(double x, double y)
+    {
+        Center = Complex(x, y);
     }
-    void SetCoefficient(double k) 
-    { 
-        Coefficient = k; 
+    void SetCoefficient(double k)
+    {
+        Coefficient = k;
     }
 
     // Apply homothety to a point
-    Complex ApplyTo(const Complex& point) const 
+    Complex ApplyTo(const Complex& point) const
     {
         return Center + (point - Center) * Coefficient;
     }
 
     // Apply homothety to a trigonometric complex number
-    ComplexTrigonometric ApplyTo(const ComplexTrigonometric& point) const 
+    ComplexTrigonometric ApplyTo(const ComplexTrigonometric& point) const
     {
         Complex algebraicPoint = Complex::FromTrigonometric(point);
         Complex result = ApplyTo(algebraicPoint);
@@ -442,7 +251,7 @@ public:
     }
 
     // Composition of homotheties (now named more clearly)
-    Homothety ComposeWith(const Homothety& other) const 
+    Homothety ComposeWith(const Homothety& other) const
     {
         // H2 ∘ H1 = Homothety with new center and coefficient
         double newCoefficient = Coefficient * other.Coefficient;
@@ -452,9 +261,9 @@ public:
     }
 
     // Inverse homothety
-    Homothety getInverse() const 
+    Homothety getInverse() const
     {
-        if (Coefficient == 0.0) 
+        if (Coefficient == 0.0)
         {
             throw std::runtime_error("Homothety with coefficient 0 is not invertible");
         }
@@ -462,7 +271,7 @@ public:
     }
 
     // Power of homothety
-    Homothety raisedTo(int Number) const 
+    Homothety raisedTo(int Number) const
     {
         return Homothety(Center, std::pow(Coefficient, Number));
     }
@@ -473,13 +282,13 @@ public:
             std::abs(Coefficient - OtherNumber.Coefficient) < 1e-10;
     }
 
-    bool operator!=(const Homothety& OtherNumber) const 
+    bool operator!=(const Homothety& OtherNumber) const
     {
         return !(*this == OtherNumber);
     }
 
     // String representation
-    std::string toString() const 
+    std::string toString() const
     {
         std::string realStr = std::to_string(Center.GetReal());
         std::string imagStr = std::to_string(Center.GetImag());
@@ -496,12 +305,12 @@ public:
 
     // Create homothety from two pairs of points (A->A', B->B')
     static Homothety fromTwoPairs(const Complex& A, const Complex& A1,
-        const Complex& B, const Complex& B1) 
+        const Complex& B, const Complex& B1)
     {
         Complex AB = B - A;
         Complex A1B1 = B1 - A1;
 
-        if (AB.Magnitude() < 1e-10) 
+        if (AB.Magnitude() < 1e-10)
         {
             throw std::runtime_error("Points A and B are too close");
         }
@@ -527,7 +336,7 @@ std::ostream& operator<<(std::ostream& os, const Homothety& h) {
     return os;
 }
 
-class AffineTransform 
+class AffineTransform
 {
 private:
 
@@ -544,69 +353,69 @@ public:
     }
 
     // Unit transformation
-    static AffineTransform Identity() 
+    static AffineTransform Identity()
     {
         return AffineTransform(1.0, 0.0, 0.0, 0.0, 1.0, 0.0);
     }
 
     // Creating a Shear Transformation
-    static AffineTransform Translation(double tx, double ty) 
+    static AffineTransform Translation(double tx, double ty)
     {
         return AffineTransform(1.0, 0.0, tx, 0.0, 1.0, ty);
     }
 
-    static AffineTransform Translation(const Complex& vector) 
+    static AffineTransform Translation(const Complex& vector)
     {
         return Translation(vector.GetReal(), vector.GetImag());
     }
 
     // Creating a Scaling Transform
-    static AffineTransform Scaling(double sx, double sy) 
+    static AffineTransform Scaling(double sx, double sy)
     {
         return AffineTransform(sx, 0.0, 0.0, 0.0, sy, 0.0);
     }
 
-    static AffineTransform Scaling(double scale) 
+    static AffineTransform Scaling(double scale)
     {
         return Scaling(scale, scale);
     }
 
-    static AffineTransform Scaling(const Complex& center, double sx, double sy) 
+    static AffineTransform Scaling(const Complex& center, double sx, double sy)
     {
         return Translation(center) * Scaling(sx, sy) * Translation(-center);
     }
 
     // Creating a Rotation Transform
-    static AffineTransform Rotation(double angle_radians) 
+    static AffineTransform Rotation(double angle_radians)
     {
         double cos_a = std::cos(angle_radians);
         double sin_a = std::sin(angle_radians);
         return AffineTransform(cos_a, -sin_a, 0.0, sin_a, cos_a, 0.0);
     }
 
-    static AffineTransform Rotation(double angle_radians, const Complex& center) 
+    static AffineTransform Rotation(double angle_radians, const Complex& center)
     {
         return Translation(center) * Rotation(angle_radians) * Translation(-center);
     }
 
-    static AffineTransform RotationDegrees(double angle_degrees) 
+    static AffineTransform RotationDegrees(double angle_degrees)
     {
         return Rotation(angle_degrees * PI / 180.0);
     }
 
-    static AffineTransform RotationDegrees(double angle_degrees, const Complex& center) 
+    static AffineTransform RotationDegrees(double angle_degrees, const Complex& center)
     {
         return Rotation(angle_degrees * PI / 180.0, center);
     }
 
     // Creating a shear transformation
-    static AffineTransform Shear(double shx, double shy) 
+    static AffineTransform Shear(double shx, double shy)
     {
         return AffineTransform(1.0, shx, 0.0, shy, 1.0, 0.0);
     }
 
     // Applying a transformation to a point
-    Complex ApplyTo(const Complex& point) const 
+    Complex ApplyTo(const Complex& point) const
     {
         double x = point.GetReal();
         double y = point.GetImag();
@@ -616,7 +425,7 @@ public:
     }
 
     // Applying a transformation to a trigonometric number
-    ComplexTrigonometric ApplyTo(const ComplexTrigonometric& point) const 
+    ComplexTrigonometric ApplyTo(const ComplexTrigonometric& point) const
     {
         Complex algebraic_point = Complex::FromTrigonometric(point);
         Complex result = ApplyTo(algebraic_point);
@@ -624,7 +433,7 @@ public:
     }
 
     // Composition of transformations (matrix multiplication)
-    AffineTransform ComposeWith(const AffineTransform& other) const 
+    AffineTransform ComposeWith(const AffineTransform& other) const
     {
         return AffineTransform(
             Matrix11 * other.Matrix11 + Matrix12 * other.Matrix21,      // New Matrix11
@@ -637,7 +446,7 @@ public:
     }
 
     // Composition operator
-    AffineTransform operator*(const AffineTransform& other) const 
+    AffineTransform operator*(const AffineTransform& other) const
     {
         return ComposeWith(other);
     }
@@ -653,30 +462,30 @@ public:
 
         double inv_det = 1.0 / det;
 
-            return AffineTransform(
-                Matrix22 * inv_det,                          // New Matrix11
-                -Matrix12 * inv_det,                         // New Matrix12
-                (Matrix12 * Matrix23 - Matrix22 * Matrix13) * inv_det,      // New Matrix13
-                -Matrix21 * inv_det,                         // New Matrix21
-                Matrix11 * inv_det,                          // New Matrix22
-                (Matrix21 * Matrix13 - Matrix11 * Matrix23) * inv_det       // New Matrix23
-            );
+        return AffineTransform(
+            Matrix22 * inv_det,                          // New Matrix11
+            -Matrix12 * inv_det,                         // New Matrix12
+            (Matrix12 * Matrix23 - Matrix22 * Matrix13) * inv_det,      // New Matrix13
+            -Matrix21 * inv_det,                         // New Matrix21
+            Matrix11 * inv_det,                          // New Matrix22
+            (Matrix21 * Matrix13 - Matrix11 * Matrix23) * inv_det       // New Matrix23
+        );
     }
 
     // Determinant of the transformation matrix
-    double Determinant() const 
+    double Determinant() const
     {
         return Matrix11 * Matrix22 - Matrix12 * Matrix21;
     }
 
     // Checking for orientation preservation
-    bool PreservesOrientation() const 
+    bool PreservesOrientation() const
     {
         return Determinant() > 0;
     }
 
     // Checking whether a transformation is isometric
-    bool IsIsometry() const 
+    bool IsIsometry() const
     {
         // For isometry: A^T * A = I
         double a = Matrix11 * Matrix11 + Matrix21 * Matrix21;
@@ -689,18 +498,18 @@ public:
     }
 
     // Getting Transformation Components
-    void GetMatrix(double& a11, double& a12, double& a21, double& a22) const 
+    void GetMatrix(double& a11, double& a12, double& a21, double& a22) const
     {
         a11 = Matrix11; a12 = Matrix12; a21 = Matrix21; a22 = Matrix22;
     }
 
-    void GetTranslation(double& tx, double& ty) const 
+    void GetTranslation(double& tx, double& ty) const
     {
         tx = Matrix13; ty = Matrix23;
     }
 
     // Decomposition of a transformation into components
-    void Decompose(Complex& translation, Complex& scale, double& rotation_angle) const 
+    void Decompose(Complex& translation, Complex& scale, double& rotation_angle) const
     {
         // Translation
         translation = Complex(Matrix13, Matrix23);
@@ -715,7 +524,7 @@ public:
     }
 
     // String representation
-    std::string ToString() const 
+    std::string ToString() const
     {
         return "AffineTransform([" +
             std::to_string(Matrix11) + ", " + std::to_string(Matrix12) + ", " + std::to_string(Matrix13) + "], [" +
@@ -723,7 +532,7 @@ public:
     }
 
     // Comparison Operators
-    bool operator==(const AffineTransform& other) const 
+    bool operator==(const AffineTransform& other) const
     {
         return std::abs(Matrix11 - other.Matrix11) < 1e-10 &&
             std::abs(Matrix12 - other.Matrix12) < 1e-10 &&
@@ -733,20 +542,20 @@ public:
             std::abs(Matrix23 - other.Matrix23) < 1e-10;
     }
 
-    bool operator!=(const AffineTransform& other) const 
+    bool operator!=(const AffineTransform& other) const
     {
         return !(*this == other);
     }
 };
 
 // Inference operator
-std::ostream& operator<<(std::ostream& Output, const AffineTransform& Transform) 
+std::ostream& operator<<(std::ostream& Output, const AffineTransform& Transform)
 {
     Output << Transform.ToString();
     return Output;
 }
 
-class OrientedAngle 
+class OrientedAngle
 {
 private:
 
@@ -758,22 +567,22 @@ public:
     OrientedAngle(double rad = 0.0) : angle_rad(rad) {}
 
     // Creation from degrees
-    static OrientedAngle fromDegrees(double degrees) 
+    static OrientedAngle fromDegrees(double degrees)
     {
         return OrientedAngle(degrees * PI / 180.0);
     }
 
     // Creation from radians
-    static OrientedAngle fromRadians(double radians) 
+    static OrientedAngle fromRadians(double radians)
     {
         return OrientedAngle(radians);
     }
 
     // Normalize the angle to the range [0, 2π)
-    OrientedAngle normalized() const 
+    OrientedAngle normalized() const
     {
         double normalized = std::fmod(angle_rad, 2 * PI);
-        if (normalized < 0) 
+        if (normalized < 0)
         {
             normalized += 2 * PI;
         }
@@ -781,14 +590,14 @@ public:
     }
 
     // Normalization to the range [-π, π)
-    OrientedAngle normalizedSigned() const 
+    OrientedAngle normalizedSigned() const
     {
         double normalized = std::fmod(angle_rad, 2 * PI);
-        if (normalized > PI) 
+        if (normalized > PI)
         {
             normalized -= 2 * PI;
         }
-        else if (normalized <= -PI) 
+        else if (normalized <= -PI)
         {
             normalized += 2 * PI;
         }
@@ -797,36 +606,36 @@ public:
     }
 
     // Getting a value in radians
-    double radians() const 
+    double radians() const
     {
         return angle_rad;
     }
 
     // Getting the value in degrees
-    double degrees() const 
+    double degrees() const
     {
         return angle_rad * 180.0 / PI;
     }
 
     // Arithmetic operations
-    OrientedAngle operator+(const OrientedAngle& other) const 
+    OrientedAngle operator+(const OrientedAngle& other) const
     {
         return OrientedAngle(angle_rad + other.angle_rad);
     }
 
-    OrientedAngle operator-(const OrientedAngle& other) const 
+    OrientedAngle operator-(const OrientedAngle& other) const
     {
         return OrientedAngle(angle_rad - other.angle_rad);
     }
 
-    OrientedAngle operator*(double scalar) const 
+    OrientedAngle operator*(double scalar) const
     {
         return OrientedAngle(angle_rad * scalar);
     }
 
-    OrientedAngle operator/(double scalar) const 
+    OrientedAngle operator/(double scalar) const
     {
-        if (scalar == 0.0) 
+        if (scalar == 0.0)
         {
             throw std::runtime_error("Division by zero");
         }
@@ -834,7 +643,7 @@ public:
     }
 
     // Assignment Operators
-    OrientedAngle& operator+=(const OrientedAngle& other) 
+    OrientedAngle& operator+=(const OrientedAngle& other)
     {
         angle_rad += other.angle_rad;
         return *this;
@@ -846,15 +655,15 @@ public:
         return *this;
     }
 
-    OrientedAngle& operator*=(double scalar) 
+    OrientedAngle& operator*=(double scalar)
     {
         angle_rad *= scalar;
         return *this;
     }
 
-    OrientedAngle& operator/=(double scalar) 
+    OrientedAngle& operator/=(double scalar)
     {
-        if (scalar == 0.0) 
+        if (scalar == 0.0)
         {
             throw std::runtime_error("Division by zero");
         }
@@ -863,51 +672,51 @@ public:
     }
 
     // Unary operators
-    OrientedAngle operator+() const 
+    OrientedAngle operator+() const
     {
         return *this;
     }
 
-    OrientedAngle operator-() const 
+    OrientedAngle operator-() const
     {
         return OrientedAngle(-angle_rad);
     }
 
     // Comparison Operators
-    bool operator==(const OrientedAngle& other) const 
+    bool operator==(const OrientedAngle& other) const
     {
         auto norm1 = this->normalized();
         auto norm2 = other.normalized();
         return std::abs(norm1.angle_rad - norm2.angle_rad) < 1e-10;
     }
 
-    bool operator!=(const OrientedAngle& other) const 
+    bool operator!=(const OrientedAngle& other) const
     {
         return !(*this == other);
     }
 
-    bool operator<(const OrientedAngle& other) const 
+    bool operator<(const OrientedAngle& other) const
     {
         auto norm1 = this->normalized();
         auto norm2 = other.normalized();
         return norm1.angle_rad < norm2.angle_rad;
     }
 
-    bool operator<=(const OrientedAngle& other) const 
+    bool operator<=(const OrientedAngle& other) const
     {
         auto norm1 = this->normalized();
         auto norm2 = other.normalized();
         return norm1.angle_rad <= norm2.angle_rad;
     }
 
-    bool operator>(const OrientedAngle& other) const 
+    bool operator>(const OrientedAngle& other) const
     {
         auto norm1 = this->normalized();
         auto norm2 = other.normalized();
         return norm1.angle_rad > norm2.angle_rad;
     }
 
-    bool operator>=(const OrientedAngle& other) const 
+    bool operator>=(const OrientedAngle& other) const
     {
         auto norm1 = this->normalized();
         auto norm2 = other.normalized();
@@ -915,34 +724,34 @@ public:
     }
 
     // Trigonometric functions
-    double sin() const 
+    double sin() const
     {
         return std::sin(angle_rad);
     }
 
-    double cos() const 
+    double cos() const
     {
         return std::cos(angle_rad);
     }
 
-    double tan() const 
+    double tan() const
     {
         return std::tan(angle_rad);
     }
 
     // Inverse trigonometric functions (static methods)
-    static OrientedAngle arcsin(double value) 
+    static OrientedAngle arcsin(double value)
     {
-        if (value < -1.0 || value > 1.0) 
+        if (value < -1.0 || value > 1.0)
         {
             throw std::runtime_error("Value out of range for arcsin");
         }
         return OrientedAngle(std::asin(value));
     }
 
-    static OrientedAngle arccos(double value) 
+    static OrientedAngle arccos(double value)
     {
-        if (value < -1.0 || value > 1.0) 
+        if (value < -1.0 || value > 1.0)
         {
             throw std::runtime_error("Value out of range for arccos");
         }
@@ -950,23 +759,23 @@ public:
         return OrientedAngle(std::acos(value));
     }
 
-    static OrientedAngle arctan(double value) 
+    static OrientedAngle arctan(double value)
     {
         return OrientedAngle(std::atan(value));
     }
 
-    static OrientedAngle arctan2(double y, double x) 
+    static OrientedAngle arctan2(double y, double x)
     {
         return OrientedAngle(std::atan2(y, x));
     }
 
     // Special corners
-    static OrientedAngle zero() 
+    static OrientedAngle zero()
     {
         return OrientedAngle(0.0);
     }
 
-    static OrientedAngle right() 
+    static OrientedAngle right()
     {
         return OrientedAngle(PI / 2.0);
     }
@@ -976,53 +785,53 @@ public:
         return OrientedAngle(PI);
     }
 
-    static OrientedAngle full() 
+    static OrientedAngle full()
     {
         return OrientedAngle(2 * PI);
     }
 
     // Checking special cases
-    bool isZero() const 
+    bool isZero() const
     {
         auto norm = this->normalized();
         return std::abs(norm.angle_rad) < 1e-10;
     }
 
-    bool isRight() const 
+    bool isRight() const
     {
         auto norm = this->normalized();
         return std::abs(norm.angle_rad - PI / 2.0) < 1e-10;
     }
 
-    bool isStraight() const 
+    bool isStraight() const
     {
         auto norm = this->normalized();
         return std::abs(norm.angle_rad - PI) < 1e-10;
     }
 
-    bool isAcute() const 
+    bool isAcute() const
     {
         auto norm = this->normalized();
         return norm.angle_rad > 0 && norm.angle_rad < PI / 2.0;
     }
 
-    bool isObtuse() const 
+    bool isObtuse() const
     {
         auto norm = this->normalized();
         return norm.angle_rad > PI / 2.0 && norm.angle_rad < PI;
     }
 
-    bool isReflex() const 
+    bool isReflex() const
     {
         auto norm = this->normalized();
         return norm.angle_rad > PI && norm.angle_rad < 2 * PI;
     }
 
     // Additional angle (sum up to 90°)
-    OrientedAngle complementary() const 
+    OrientedAngle complementary() const
     {
         auto norm = this->normalized();
-        if (norm.angle_rad > PI / 2.0) 
+        if (norm.angle_rad > PI / 2.0)
         {
             throw std::runtime_error("Angle too large for complementary angle");
         }
@@ -1030,10 +839,10 @@ public:
     }
 
     // Adjacent angle (sum up to 180°)
-    OrientedAngle supplementary() const 
+    OrientedAngle supplementary() const
     {
         auto norm = this->normalized();
-        if (norm.angle_rad > PI) 
+        if (norm.angle_rad > PI)
         {
             throw std::runtime_error("Angle too large for supplementary angle");
         }
@@ -1041,31 +850,31 @@ public:
     }
 
     // String representation
-    std::string toString() const 
+    std::string toString() const
     {
         return std::to_string(degrees()) + "°";
     }
 
-    std::string toStringRadians() const 
+    std::string toStringRadians() const
     {
         return std::to_string(angle_rad) + " rad";
     }
 };
 
 // Inference operator
-std::ostream& operator<<(std::ostream& os, const OrientedAngle& angle) 
+std::ostream& operator<<(std::ostream& os, const OrientedAngle& angle)
 {
     os << angle.toString();
     return os;
 }
 
 // Multiplication by a scalar (commutativity)
-OrientedAngle operator*(double scalar, const OrientedAngle& angle) 
+OrientedAngle operator*(double scalar, const OrientedAngle& angle)
 {
     return angle * scalar;
 }
 
-class BarycentricCoordinates 
+class BarycentricCoordinates
 {
 
 private:
@@ -1083,7 +892,7 @@ public:
     static BarycentricCoordinates fromCartesian(const Complex& point,
         const Complex& A,
         const Complex& B,
-        const Complex& C) 
+        const Complex& C)
     {
         // Calculating barycentric coordinates using areas
         Complex v0 = B - A;
@@ -1098,7 +907,7 @@ public:
 
         double denom = d00 * d11 - d01 * d01;
 
-        if (std::abs(denom) < 1e-10) 
+        if (std::abs(denom) < 1e-10)
         {
             throw std::runtime_error("Degenerate triangle in barycentric coordinates");
         }
@@ -1111,27 +920,27 @@ public:
     }
 
     // Creating special points of a triangle
-    static BarycentricCoordinates vertexA() 
+    static BarycentricCoordinates vertexA()
     {
         return BarycentricCoordinates(1.0, 0.0, 0.0);
     }
 
-    static BarycentricCoordinates vertexB() 
+    static BarycentricCoordinates vertexB()
     {
         return BarycentricCoordinates(0.0, 1.0, 0.0);
     }
 
-    static BarycentricCoordinates vertexC() 
+    static BarycentricCoordinates vertexC()
     {
         return BarycentricCoordinates(0.0, 0.0, 1.0);
     }
 
-    static BarycentricCoordinates centroid() 
+    static BarycentricCoordinates centroid()
     {
         return BarycentricCoordinates(1.0 / 3.0, 1.0 / 3.0, 1.0 / 3.0);
     }
 
-    static BarycentricCoordinates incenter() 
+    static BarycentricCoordinates incenter()
     {
         // All coordinates are equal for an equilateral triangle
         return centroid();
@@ -1151,7 +960,7 @@ public:
     BarycentricCoordinates normalized() const
     {
         double sum = Alpha + Beta + Gamma;
-        if (std::abs(sum) < 1e-10) 
+        if (std::abs(sum) < 1e-10)
         {
             throw std::runtime_error("Cannot normalize barycentric coordinates with zero sum");
         }
@@ -1159,24 +968,24 @@ public:
     }
 
     // Validation check
-    bool isValid() const 
+    bool isValid() const
     {
         return Alpha >= 0.0 && Beta >= 0.0 && Gamma >= 0.0;
     }
 
-    bool isInsideTriangle() const 
+    bool isInsideTriangle() const
     {
         return isValid() && std::abs(Alpha + Beta + Gamma - 1.0) < 1e-10;
     }
 
-    bool isOnEdge() const 
+    bool isOnEdge() const
     {
         return isValid() && (std::abs(Alpha) < 1e-10 ||
             std::abs(Beta) < 1e-10 ||
             std::abs(Gamma) < 1e-10);
     }
 
-    bool isOnVertex() const 
+    bool isOnVertex() const
     {
         return (std::abs(Alpha - 1.0) < 1e-10 && std::abs(Beta) < 1e-10 && std::abs(Gamma) < 1e-10) ||
             (std::abs(Beta - 1.0) < 1e-10 && std::abs(Alpha) < 1e-10 && std::abs(Gamma) < 1e-10) ||
@@ -1184,20 +993,20 @@ public:
     }
 
     // Transformation to Cartesian coordinates{
-    Complex toCartesian(const Complex& A, const Complex& B, const Complex& C) const 
+    Complex toCartesian(const Complex& A, const Complex& B, const Complex& C) const
     {
-            return A * Alpha + B * Beta + C * Gamma;
+        return A * Alpha + B * Beta + C * Gamma;
     }
 
     // Arithmetic operations
-    BarycentricCoordinates operator+(const BarycentricCoordinates& other) const 
+    BarycentricCoordinates operator+(const BarycentricCoordinates& other) const
     {
         return BarycentricCoordinates(Alpha + other.Alpha,
             Beta + other.Beta,
             Gamma + other.Gamma);
     }
 
-    BarycentricCoordinates operator-(const BarycentricCoordinates& other) const 
+    BarycentricCoordinates operator-(const BarycentricCoordinates& other) const
     {
         return BarycentricCoordinates(Alpha - other.Alpha,
             Beta - other.Beta,
@@ -1210,9 +1019,9 @@ public:
             Gamma * scalar);
     }
 
-    BarycentricCoordinates operator/(double scalar) const 
+    BarycentricCoordinates operator/(double scalar) const
     {
-        if (std::abs(scalar) < 1e-10) 
+        if (std::abs(scalar) < 1e-10)
         {
             throw std::runtime_error("Division by zero in barycentric coordinates");
         }
@@ -1222,7 +1031,7 @@ public:
     }
 
     // Assignment Operators
-    BarycentricCoordinates& operator+=(const BarycentricCoordinates& other) 
+    BarycentricCoordinates& operator+=(const BarycentricCoordinates& other)
     {
         Alpha += other.Alpha;
         Beta += other.Beta;
@@ -1230,7 +1039,7 @@ public:
         return *this;
     }
 
-    BarycentricCoordinates& operator-=(const BarycentricCoordinates& other) 
+    BarycentricCoordinates& operator-=(const BarycentricCoordinates& other)
     {
         Alpha -= other.Alpha;
         Beta -= other.Beta;
@@ -1238,7 +1047,7 @@ public:
         return *this;
     }
 
-    BarycentricCoordinates& operator*=(double scalar) 
+    BarycentricCoordinates& operator*=(double scalar)
     {
         Alpha *= scalar;
         Beta *= scalar;
@@ -1246,9 +1055,9 @@ public:
         return *this;
     }
 
-    BarycentricCoordinates& operator/=(double scalar) 
+    BarycentricCoordinates& operator/=(double scalar)
     {
-        if (std::abs(scalar) < 1e-10) 
+        if (std::abs(scalar) < 1e-10)
         {
             throw std::runtime_error("Division by zero in barycentric coordinates");
         }
@@ -1263,7 +1072,7 @@ public:
     static T interpolate(const BarycentricCoordinates& coords,
         const T& valueA,
         const T& valueB,
-        const T& valueC) 
+        const T& valueC)
     {
         return valueA * coords.Alpha + valueB * coords.Beta + valueC * coords.Gamma;
     }
@@ -1272,15 +1081,15 @@ public:
     static std::vector<double> interpolateColor(const BarycentricCoordinates& coords,
         const std::vector<double>& colorA,
         const std::vector<double>& colorB,
-        const std::vector<double>& colorC) 
+        const std::vector<double>& colorC)
     {
-        if (colorA.size() != colorB.size() || colorA.size() != colorC.size()) 
+        if (colorA.size() != colorB.size() || colorA.size() != colorC.size())
         {
             throw std::runtime_error("Color vectors must have same size");
         }
 
         std::vector<double> result(colorA.size());
-        for (size_t i = 0; i < colorA.size(); ++i) 
+        for (size_t i = 0; i < colorA.size(); ++i)
         {
             result[i] = coords.Alpha * colorA[i] + coords.Beta * colorB[i] + coords.Gamma * colorC[i];
         }
@@ -1288,7 +1097,7 @@ public:
     }
 
     // Distance between barycentric coordinates
-    double distanceTo(const BarycentricCoordinates& other) const 
+    double distanceTo(const BarycentricCoordinates& other) const
     {
         double da = Alpha - other.Alpha;
         double db = Beta - other.Beta;
@@ -1303,20 +1112,20 @@ public:
     }
 
     // Comparison Operators
-    bool operator==(const BarycentricCoordinates& other) const 
+    bool operator==(const BarycentricCoordinates& other) const
     {
         return std::abs(Alpha - other.Alpha) < 1e-10 &&
             std::abs(Beta - other.Beta) < 1e-10 &&
             std::abs(Gamma - other.Gamma) < 1e-10;
     }
 
-    bool operator!=(const BarycentricCoordinates& other) const 
+    bool operator!=(const BarycentricCoordinates& other) const
     {
         return !(*this == other);
     }
 
     // String representation
-    std::string toString() const 
+    std::string toString() const
     {
         return "Barycentric(" +
             std::to_string(Alpha) + ", " +
@@ -1325,7 +1134,7 @@ public:
     }
 
     // Checking special provisions
-    bool isCentroid() const 
+    bool isCentroid() const
     {
         auto norm = this->normalized();
         return std::abs(norm.Alpha - 1.0 / 3.0) < 1e-10 &&
@@ -1335,14 +1144,14 @@ public:
 };
 
 // Inference operator
-std::ostream& operator<<(std::ostream& os, const BarycentricCoordinates& bc) 
+std::ostream& operator<<(std::ostream& os, const BarycentricCoordinates& bc)
 {
     os << bc.toString();
     return os;
 }
 
 // Multiplication by a scalar (commutativity)
-BarycentricCoordinates operator*(double scalar, const BarycentricCoordinates& bc) 
+BarycentricCoordinates operator*(double scalar, const BarycentricCoordinates& bc)
 {
     return bc * scalar;
 }
@@ -1566,6 +1375,6 @@ int main()
     // Checking provisions
     std::cout << "Is centroid? " << (centroid.isCentroid() ? "Yes" : "No") << "\n";
     std::cout << "Is on vertex? " << (vertexA.isOnVertex() ? "Yes" : "No") << "\n";
-    
+
     return 0;
 }
