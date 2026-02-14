@@ -152,7 +152,7 @@ Homothety Homothety::FromFixedPointAndImage(const Complex& FixedPoint, const Com
     // (ImagePoint = FixedPoint + K * (FixedPoint))
     // Instead, let's create a homothety centered at the origin.
 
-	double K = ImagePoint.Magnitude() / FixedPoint.Magnitude();
+	double K = ImagePoint.magnitude() / FixedPoint.magnitude();
 	return Homothety(Complex(0, 0), K);
 }
 
@@ -184,14 +184,14 @@ Homothety Homothety::FromTwoPairs(const Complex& A, const Complex& A1, const Com
 	Complex AB = B - A;
 	Complex A1B1 = B1 - A1;
 
-	if (AB.Magnitude() < 1e-10)
+	if (AB.magnitude() < 1e-10)
 	{
 		return Homothety();
 	}
 	else
 	{
-		double K = A1B1.Magnitude() / AB.Magnitude();
-		double CrossProduct = AB.GetReal() * A1B1.GetImag() - AB.GetImag() * A1B1.GetReal();
+		double K = A1B1.magnitude() / AB.magnitude();
+		double CrossProduct = AB.getReal() * A1B1.getImag() - AB.getImag() * A1B1.getReal();
 
 		if (CrossProduct < 0)
 		{
@@ -232,7 +232,7 @@ AffineTransform AffineTransform::Translation(double tx, double ty)
 
 AffineTransform AffineTransform::Translation(const Complex& Vector)
 {
-	return Translation(Vector.GetReal(), Vector.GetImag());
+	return Translation(Vector.getReal(), Vector.getImag());
 }
 
 AffineTransform AffineTransform::Scaling(double sx, double sy)
@@ -280,7 +280,7 @@ AffineTransform AffineTransform::Shear(double shx, double shy)
 AffineTransform AffineTransform::ReflectionOverLine(const Complex& FirstPoint, const Complex& SecondPoint)
 {
 	Complex Direction = SecondPoint - FirstPoint;
-	double Angle = std::atan2(Direction.GetImag(), Direction.GetReal());
+	double Angle = std::atan2(Direction.getImag(), Direction.getReal());
 
 	// We rotate the coordinate system, reflect it, and rotate it back
 	return Translation(FirstPoint) * Rotation(-Angle) * Scaling(1, -1) * Rotation(Angle) * Translation(FirstPoint * -1);
@@ -299,7 +299,7 @@ AffineTransform AffineTransform::ReflectionOverYAxis()
 AffineTransform AffineTransform::ProjectionOntoLine(const Complex& FirstPoint, const Complex& SecondPoint)
 {
 	Complex Direction = SecondPoint - FirstPoint;
-	double Angle = std::atan2(Direction.GetImag(), Direction.GetReal());
+	double Angle = std::atan2(Direction.getImag(), Direction.getReal());
 
 	// Projection: rotate, reset the ordinate axis, rotate back
 	return Translation(FirstPoint) * Rotation(-Angle) * Scaling(1, 0) * Rotation(Angle) * Translation(FirstPoint * -1);
@@ -313,36 +313,36 @@ AffineTransform AffineTransform::FromTriangleMapping(const Complex& srcA, const 
 	Complex dstAB = srcB - srcA;
 	Complex dstAC = dstC - dstA;
 
-	double det = srcAB.GetReal() * srcAC.GetImag() - srcAB.GetImag() * srcAC.GetReal();
+	double det = srcAB.getReal() * srcAC.getImag() - srcAB.getImag() * srcAC.getReal();
 	if (std::abs(det) < 1e-10)
 	{
 		return AffineTransform();
 	}
 	else
 	{
-		double matrix11 = (dstAB.GetReal() * srcAC.GetImag() - dstAC.GetReal() * srcAB.GetImag()) / det;
-		double matrix12 = (dstAC.GetReal() * srcAB.GetReal() - dstAB.GetReal() * srcAC.GetReal()) / det;
-		double matrix21 = (dstAB.GetImag() * srcAC.GetImag() - dstAC.GetImag() * srcAB.GetImag()) / det;
-		double matrix22 = (dstAC.GetImag() * srcAB.GetReal() - dstAB.GetImag() * srcAC.GetReal()) / det;
+		double matrix11 = (dstAB.getReal() * srcAC.getImag() - dstAC.getReal() * srcAB.getImag()) / det;
+		double matrix12 = (dstAC.getReal() * srcAB.getReal() - dstAB.getReal() * srcAC.getReal()) / det;
+		double matrix21 = (dstAB.getImag() * srcAC.getImag() - dstAC.getImag() * srcAB.getImag()) / det;
+		double matrix22 = (dstAC.getImag() * srcAB.getReal() - dstAB.getImag() * srcAC.getReal()) / det;
 
-		Complex translation = dstA - Complex(matrix11 * srcA.GetReal() + matrix12 * srcA.GetImag(),
-			matrix21 * srcA.GetReal() + matrix22 * srcA.GetImag());
+		Complex translation = dstA - Complex(matrix11 * srcA.getReal() + matrix12 * srcA.getImag(),
+			matrix21 * srcA.getReal() + matrix22 * srcA.getImag());
 
-		return AffineTransform(matrix11, matrix12, translation.GetReal(),
-			matrix21, matrix22, translation.GetImag());
+		return AffineTransform(matrix11, matrix12, translation.getReal(),
+			matrix21, matrix22, translation.getImag());
 	}
 }
 
 AffineTransform AffineTransform::FromBasisVectors(const Complex& e1, const Complex& e2, const Complex& origin)
 {
-	return AffineTransform(e1.GetReal(), e2.GetReal(), origin.GetReal(),
-		e1.GetImag(), e2.GetImag(), origin.GetImag());
+	return AffineTransform(e1.getReal(), e2.getReal(), origin.getReal(),
+		e1.getImag(), e2.getImag(), origin.getImag());
 }
 
 Complex AffineTransform::ApplyTo(const Complex& point) const
 {
-	double x = point.GetReal();
-	double y = point.GetImag();
+	double x = point.getReal();
+	double y = point.getImag();
 	double new_x = Matrix11 * x + Matrix12 * y + Matrix13;
 	double new_y = Matrix21 * x + Matrix22 * y + Matrix23;
 	return Complex(new_x, new_y);
@@ -459,8 +459,8 @@ std::vector<Complex> AffineTransform::GetFixedPoints() const
 	if (std::abs(det) > 1e-10) 
 	{
 		// The only fixed point
-		double x = (d * translation.GetReal() - b * translation.GetImag()) / det;
-		double y = (-c * translation.GetReal() + a * translation.GetImag()) / det;
+		double x = (d * translation.getReal() - b * translation.getImag()) / det;
+		double y = (-c * translation.getReal() + a * translation.getImag()) / det;
 		return 
 		{ 
 			Complex(x, y) 
@@ -476,7 +476,7 @@ std::vector<Complex> AffineTransform::GetFixedPoints() const
 bool AffineTransform::HasFixedPoint(const Complex& point) const
 {
 	Complex transformed = ApplyTo(point);
-	return (point - transformed).Magnitude() < 1e-10;
+	return (point - transformed).magnitude() < 1e-10;
 }
 
 std::vector<Complex> AffineTransform::GetEigenvalues() const
@@ -514,13 +514,13 @@ std::vector<Complex> AffineTransform::GetEigenvectors() const
 
 	for (const auto& lambda : eigenvalues) 
 	{
-		if (std::abs(lambda.GetImag()) < 1e-10) 
+		if (std::abs(lambda.getImag()) < 1e-10) 
 		{
 			// Real eigenvalue
-			double a = Matrix11 - lambda.GetReal();
+			double a = Matrix11 - lambda.getReal();
 			double b = Matrix12;
 			double c = Matrix21;
-			double d = Matrix22 - lambda.GetReal();
+			double d = Matrix22 - lambda.getReal();
 
 			if (std::abs(b) > 1e-10 || std::abs(a) > 1e-10) 
 			{
@@ -553,7 +553,7 @@ std::pair<Complex, double> AffineTransform::ApplyToCircle(const Complex& center,
 
 	// For an affine transformation, a circle becomes an ellipse
 	// Return the circumscribed circle around the ellipse
-	double maxScale = std::max(GetScaleFactors().GetReal(), GetScaleFactors().GetImag());
+	double maxScale = std::max(GetScaleFactors().getReal(), GetScaleFactors().getImag());
 	double newRadius = radius * maxScale;
 
 	return { newCenter, newRadius };
@@ -562,8 +562,8 @@ std::pair<Complex, double> AffineTransform::ApplyToCircle(const Complex& center,
 Complex AffineTransform::ApplyToVector(const Complex& vector) const
 {
 	// We use only the linear part (without broadcasting)
-	double x = vector.GetReal();
-	double y = vector.GetImag();
+	double x = vector.getReal();
+	double y = vector.getImag();
 	return Complex(Matrix11 * x + Matrix12 * y, Matrix21 * x + Matrix22 * y);
 }
 
@@ -730,4 +730,40 @@ std::ostream& operator<<(std::ostream& Output, const AffineTransform& Transform)
 {
 	Output << Transform.ToString();
 	return Output;
+}
+
+
+void CompositeTransformation::AddTransformation(std::unique_ptr<PlaneTransformation> t) {
+	transforms.push_back(std::move(t));
+}
+
+Complex CompositeTransformation::ApplyTo(const Complex& Point) const {
+	Complex result = Point;
+	for (const auto& t : transforms)
+		result = t->ApplyTo(result);
+	return result;
+}
+
+std::string CompositeTransformation::ToString() const {
+	std::stringstream ss;
+	ss << "Composite[";
+	for (size_t i = 0; i < transforms.size(); ++i) {
+		if (i > 0) ss << " ∘ ";
+		ss << transforms[i]->ToString();
+	}
+	ss << "]";
+	return ss.str();
+}
+
+bool CompositeTransformation::IsIdentity() const {
+	for (const auto& t : transforms)
+		if (!t->IsIdentity()) return false;
+	return true;
+}
+
+std::unique_ptr<PlaneTransformation> CompositeTransformation::GetInverse() const {
+	auto inv = std::make_unique<CompositeTransformation>();
+	for (auto it = transforms.rbegin(); it != transforms.rend(); ++it)
+		inv->AddTransformation((*it)->GetInverse());
+	return inv;
 }
