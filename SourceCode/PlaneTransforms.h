@@ -4,6 +4,7 @@
 #include <string>
 #include <vector>
 #include <memory>
+#include <tuple>
 
 // Base class for all plane transformations
 class PlaneTransformation
@@ -146,7 +147,7 @@ public:
 	Complex ApplyToVector(const Complex& Vector) const; // No broadcast
 
 	// Decomposition methods
-	void Decompose(Complex& Translation, Complex& Scale, double RotationAngle) const;
+	void Decompose(Complex& Translation, Complex& Scale, double& RotationAngle) const;
 	std::tuple<AffineTransform, AffineTransform, AffineTransform> DecomposeLDU() const; // LDU decomposition
 	std::tuple<AffineTransform, AffineTransform, AffineTransform> DecomposeQR() const; // QR decomposition
 
@@ -161,7 +162,7 @@ public:
 	AffineTransform Exponential() const;
 
 	// Interpolation
-	static AffineTransform Lerp(const AffineTransform& A, const AffineTransform& B, const AffineTransform& C);
+	static AffineTransform Lerp(const AffineTransform& A, const AffineTransform& B, double t);
 
 	// PlaneTransformation interface
 	std::unique_ptr<PlaneTransformation> GetInverse() const override;
@@ -179,6 +180,18 @@ public:
 	bool operator==(const AffineTransform& Other) const;
 	bool operator!=(const AffineTransform& Other) const;
 
+	};
+
+	class CompositeTransformation : public PlaneTransformation {
+	private:
+		std::vector<std::unique_ptr<PlaneTransformation>> transforms;
+	public:
+		void AddTransformation(std::unique_ptr<PlaneTransformation> t);
+		Complex ApplyTo(const Complex& Point) const override;
+		std::string ToString() const override;
+		bool IsIdentity() const override;
+		std::unique_ptr<PlaneTransformation> GetInverse() const override;
+		std::unique_ptr<PlaneTransformation> ComposeWith(const PlaneTransformation& Other) const override;
 	};
 
 	std::ostream& operator<<(std::ostream& Output, const AffineTransform& Transform);
