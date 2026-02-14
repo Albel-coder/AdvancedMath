@@ -6,212 +6,177 @@
 const double PI = 3.1415926535897932;
 
 // Homothety implementation
-Homothety::Homothety(const Complex& ComplexNumber, double K)
-{
-	Center = ComplexNumber;
-	Coefficient = K;
+Homothety::Homothety(const Complex& complexNumber, double k) {
+	center = complexNumber;
+	coefficient = k;
 }
 
-Homothety::Homothety(double CenterX, double CenterY, double K)
-{
-	Center = Complex(CenterX, CenterY);
-	Coefficient = K;
+Homothety::Homothety(double centerX, double centerY, double k) {
+	center = Complex(centerX, centerY);
+	coefficient = k;
 }
 
-Complex Homothety::GetCenter() const
-{
-	return Center;
+Complex Homothety::getCenter() const {
+	return center;
 }
 
-double Homothety::GetCoefficient() const
-{
-	return Coefficient;
+double Homothety::getCoefficient() const {
+	return coefficient;
 }
 
-void Homothety::SetCenter(const Complex& ComplexNumber)
-{
-	Center = ComplexNumber;
+void Homothety::setCenter(const Complex& complexNumber) {
+	center = complexNumber;
 }
 
-void Homothety::SetCenter(double X, double Y)
-{
-	Center = Complex(X, Y);
+void Homothety::setCenter(double x, double y) {
+	center = Complex(x, y);
 }
 
-void Homothety::SetCoefficient(double K)
-{
-	Coefficient = K;
+void Homothety::setCoefficient(double k) {
+	coefficient = k;
 }
 
-Complex Homothety::ApplyTo(const Complex& Point) const
-{
-	return Center + (Point - Center) * Coefficient;
+Complex Homothety::applyTo(const Complex& point) const {
+	return center + (point - center) * coefficient;
 }
 
-Homothety Homothety::ComposeWith(const Homothety& Other) const
-{
-	if (Center == Other.Center)
-	{
-		return Homothety(Center, Coefficient * Other.Coefficient);
+Homothety Homothety::composeWith(const Homothety& other) const {
+	if (center == other.center) {
+		return Homothety(center, coefficient * other.coefficient);
 	}
 
-	double NewCoefficient = Coefficient * Other.Coefficient;
-	Complex NewCenter = (Center * (1 - Other.Coefficient) + Other.Center * (Other.Coefficient * (1 - Coefficient)))
-		/ (1 - Coefficient * Other.Coefficient);
+	double newCoefficient = coefficient * other.coefficient;
+	Complex newCenter = (center * (1 - other.coefficient) + other.center * (other.coefficient * (1 - coefficient)))
+		/ (1 - coefficient * other.coefficient);
 
-	return Homothety(NewCenter, NewCoefficient);
+	return Homothety(newCenter, newCoefficient);
 }
 
-Homothety Homothety::getInverse() const
-{
-	if (Coefficient == 0.0)
-	{
+Homothety Homothety::getInverse() {
+	if (coefficient == 0.0) {
 		return Homothety();
 	}
-	else
-	{
-		return Homothety(Center, 1.0 / Coefficient);
+	else {
+		return Homothety(center, 1.0 / coefficient);
 	}
 }
 
-Homothety Homothety::RaisedTo(int Number) const
-{
-	return Homothety(Center, std::pow(Coefficient, Number));
+Homothety Homothety::raisedTo(int number) const {
+	return Homothety(center, std::pow(coefficient, number));
 }
 
-bool Homothety::IsExpansion() const
-{
-	return Coefficient > 1.0;
+bool Homothety::isExpansion() const {
+	return coefficient > 1.0;
 }
 
-bool Homothety::IsContraction() const
-{
-	return Coefficient > 0.0 && Coefficient < 1.0;
+bool Homothety::isContraction() const {
+	return coefficient > 0.0 && coefficient < 1.0;
 }
 
-bool Homothety::IsReflection() const
-{
-	return Coefficient < 0.0;
+bool Homothety::isReflection() const {
+	return coefficient < 0.0;
 }
 
-bool Homothety::IsIdentity() const
-{
+bool Homothety::isIdentity() const {
 	return false;
 }
 
-double Homothety::GetScaleFactor() const
-{
+double Homothety::getScaleFactor() const {
 	return 0.0;
 }
 
-Complex Homothety::GetFixedPointers() const
-{
+Complex Homothety::getFixedPointers() const {
 	// For a homothety, the only fixed point is the center (only if the coefficient is not equal to one)
-	if (std::abs(Coefficient - 1.0) > 1e-10)
-	{
-		return Center;
+	if (std::abs(coefficient - 1.0) > 1e-10) {
+		return center;
 	}
-	else // If the coefficient is equal to one, then all points are fixed (identity transformation)
-	{
+	else {
+		// If the coefficient is equal to one, then all points are fixed (identity transformation)
 		return Complex();
 	}
 }
 
-std::vector<Complex> Homothety::ApplyToPolygon(const std::vector<Complex>& Polygon) const
-{
-	std::vector<Complex> Result;
-	Result.reserve(Polygon.size());
-	for (const auto& Point : Polygon)
-	{
-		Result.push_back(ApplyTo(Point));
+std::vector<Complex> Homothety::applyToPolygon(const std::vector<Complex>& polygon) const {
+	std::vector<Complex> result;
+	result.reserve(polygon.size());
+	for (const auto& point : polygon) {
+		result.push_back(applyTo(point));
 	}
 
-	return Result;
+	return result;
 }
 
-std::pair<Complex, double> Homothety::ApplyToCircle(const Complex& Center, double Radius) const
-{
-	Complex NewCenter = ApplyTo(Center);
-	double NewRadius = std::abs(Coefficient) * Radius;
-	return {NewCenter, NewRadius};
+std::pair<Complex, double> Homothety::applyToCircle(const Complex& center, double radius) const {
+	Complex newCenter = applyTo(center);
+	double newRadius = std::abs(coefficient) * radius;
+
+	return { newCenter, newRadius };
 }
 
-Homothety Homothety::FromScaleFactor(double Scale)
-{
-	return Homothety(Complex(0, 0), Scale);
+Homothety Homothety::fromScaleFactor(double scale) {
+	return Homothety(Complex(0, 0), scale);
 }
 
-Homothety Homothety::FromFixedPointAndImage(const Complex& FixedPoint, const Complex& ImagePoint)
-{
-	if (FixedPoint == ImagePoint)
-	{
-		return Homothety(FixedPoint, 1.0); // Identity
+Homothety Homothety::fromFixedPointAndImage(const Complex& fixedPoint, const Complex& imagePoint) {
+	if (fixedPoint == imagePoint) {
+		return Homothety(fixedPoint, 1.0); // Identity
 	}
 
 	// For a homothety centered at a fixed point, the old function won't work.
     // (ImagePoint = FixedPoint + K * (FixedPoint))
     // Instead, let's create a homothety centered at the origin.
 
-	double K = ImagePoint.magnitude() / FixedPoint.magnitude();
-	return Homothety(Complex(0, 0), K);
+	double k = imagePoint.magnitude() / fixedPoint.magnitude();
+	return Homothety(Complex(0, 0), k);
 }
 
-std::unique_ptr<PlaneTransformation> Homothety::GetInverse() const
-{
+std::unique_ptr<PlaneTransformation> Homothety::getInverse() const {
 	return std::make_unique<Homothety>(getInverse());
 }
 
-bool Homothety::operator==(const Homothety& OtherNumber) const
-{
-	return Center == OtherNumber.Center &&
-		std::abs(Coefficient - OtherNumber.Coefficient) < 1e-10;
+bool Homothety::operator==(const Homothety& otherNumber) const {
+	return center == otherNumber.center &&
+		std::abs(coefficient - otherNumber.coefficient) < 1e-10;
 }
 
-bool Homothety::operator!=(const Homothety& OtherNumber) const
-{
-	return !(*this == OtherNumber);
+bool Homothety::operator!=(const Homothety& otherNumber) const {
+	return !(*this == otherNumber);
 }
 
-std::string Homothety::ToString() const
-{
-	std::stringstream Stream;
-	Stream << "Homothety(center=" << Center << ", K= " << Coefficient << ")";
-	return Stream.str();
+std::string Homothety::toString() const {
+	std::stringstream stream;
+	stream << "Homothety(center=" << center << ", K= " << coefficient << ")";
+
+	return stream.str();
 }
 
-Homothety Homothety::FromTwoPairs(const Complex& A, const Complex& A1, const Complex& B, const Complex& B1)
-{
-	Complex AB = B - A;
-	Complex A1B1 = B1 - A1;
+Homothety Homothety::fromTwoPairs(const Complex& a, const Complex& a1, const Complex& b, const Complex& b1) {
+	Complex ab = b - a;
+	Complex a1b1 = b1 - a1;
 
-	if (AB.magnitude() < 1e-10)
-	{
+	if (ab.magnitude() < 1e-10)	{
 		return Homothety();
 	}
-	else
-	{
-		double K = A1B1.magnitude() / AB.magnitude();
-		double CrossProduct = AB.getReal() * A1B1.getImag() - AB.getImag() * A1B1.getReal();
+	else {
+		double k = a1b1.magnitude() / ab.magnitude();
+		double crossProduct = ab.getReal() * a1b1.getImag() - ab.getImag() * a1b1.getReal();
 
-		if (CrossProduct < 0)
-		{
-			K = -K;
+		if (crossProduct < 0) {
+			k = -k;
 		}
 
-		Complex center = (A1 - A * K) / (1 - K);
-		return Homothety(center, K);
+		Complex center = (a1 - a * k) / (1 - k);
+		return Homothety(center, k);
 	}
 }
 
-std::ostream& operator<<(std::ostream& Output, const Homothety& H)
-{
-	Output << H.ToString();
-	return Output;
+std::ostream& operator<<(std::ostream& output, const Homothety& h) {
+	output << h.toString();
+	return output;
 }
 
 // AffineTransform implementation (Advanced)
-AffineTransform::AffineTransform(double matrix11, double matrix12, double matrix13, double matrix21, double matrix22, double matrix23)
-{
+AffineTransform::AffineTransform(double matrix11, double matrix12, double matrix13, double matrix21, double matrix22, double matrix23) {
 	Matrix11 = matrix11;
 	Matrix12 = matrix12;
 	Matrix13 = matrix13;
@@ -339,7 +304,7 @@ AffineTransform AffineTransform::FromBasisVectors(const Complex& e1, const Compl
 		e1.getImag(), e2.getImag(), origin.getImag());
 }
 
-Complex AffineTransform::ApplyTo(const Complex& point) const
+Complex AffineTransform::applyTo(const Complex& point) const
 {
 	double x = point.getReal();
 	double y = point.getImag();
@@ -377,7 +342,7 @@ AffineTransform AffineTransform::Inverse() const
 	);
 }
 
-bool AffineTransform::IsIdentity() const
+bool AffineTransform::isIdentity() const
 {
 	return std::abs(Matrix11 - 1.0) < 1e-10 && std::abs(Matrix12) < 1e-10 &&
 		std::abs(Matrix13) < 1e-10 && std::abs(Matrix21) < 1e-10 &&
@@ -418,7 +383,7 @@ bool AffineTransform::IsDirect() const
 bool AffineTransform::IsInvolutory() const
 {
 	AffineTransform square = this->ComposeWith(*this);
-	return square.IsIdentity();
+	return square.isIdentity();
 }
 
 Complex AffineTransform::GetTranslation() const
@@ -475,7 +440,7 @@ std::vector<Complex> AffineTransform::GetFixedPoints() const
 
 bool AffineTransform::HasFixedPoint(const Complex& point) const
 {
-	Complex transformed = ApplyTo(point);
+	Complex transformed = applyTo(point);
 	return (point - transformed).magnitude() < 1e-10;
 }
 
@@ -542,14 +507,14 @@ std::vector<Complex> AffineTransform::ApplyToPolygon(const std::vector<Complex>&
 	result.reserve(polygon.size());
 	for (const auto& point : polygon) 
 	{
-		result.push_back(ApplyTo(point));
+		result.push_back(applyTo(point));
 	}
 	return result;
 }
 
 std::pair<Complex, double> AffineTransform::ApplyToCircle(const Complex& center, double radius) const
 {
-	Complex newCenter = ApplyTo(center);
+	Complex newCenter = applyTo(center);
 
 	// For an affine transformation, a circle becomes an ellipse
 	// Return the circumscribed circle around the ellipse
@@ -658,12 +623,12 @@ AffineTransform AffineTransform::Lerp(const AffineTransform& a, const AffineTran
 	);
 }
 
-std::unique_ptr<PlaneTransformation> AffineTransform::GetInverse() const
+std::unique_ptr<PlaneTransformation> AffineTransform::getInverse() const
 {
 	return std::make_unique<AffineTransform>(Inverse());
 }
 
-std::unique_ptr<PlaneTransformation> AffineTransform::ComposeWith(const PlaneTransformation& other) const
+std::unique_ptr<PlaneTransformation> AffineTransform::composeWith(const PlaneTransformation& other) const
 {
 	if (const AffineTransform* otherAffine = dynamic_cast<const AffineTransform*>(&other)) 
 	{
@@ -671,7 +636,7 @@ std::unique_ptr<PlaneTransformation> AffineTransform::ComposeWith(const PlaneTra
 	}
 	auto composite = std::make_unique<CompositeTransformation>();
 	composite->AddTransformation(std::make_unique<AffineTransform>(*this));
-	composite->AddTransformation(other.GetInverse()->GetInverse());
+	composite->AddTransformation(other.getInverse()->getInverse());
 
 	return composite;
 }
@@ -694,7 +659,7 @@ void AffineTransform::GetTranslation(double& tx, double& ty) const
 	tx = Matrix13; ty = Matrix23;
 }
 
-std::string AffineTransform::ToString() const
+std::string AffineTransform::toString() const
 {
 	std::stringstream ss;
 	ss << "AffineTransform(["
@@ -728,7 +693,7 @@ bool AffineTransform::operator!=(const AffineTransform& other) const
 
 std::ostream& operator<<(std::ostream& Output, const AffineTransform& Transform)
 {
-	Output << Transform.ToString();
+	Output << Transform.toString();
 	return Output;
 }
 
@@ -737,33 +702,33 @@ void CompositeTransformation::AddTransformation(std::unique_ptr<PlaneTransformat
 	transforms.push_back(std::move(t));
 }
 
-Complex CompositeTransformation::ApplyTo(const Complex& Point) const {
+Complex CompositeTransformation::applyTo(const Complex& Point) const {
 	Complex result = Point;
 	for (const auto& t : transforms)
-		result = t->ApplyTo(result);
+		result = t->applyTo(result);
 	return result;
 }
 
-std::string CompositeTransformation::ToString() const {
+std::string CompositeTransformation::toString() const {
 	std::stringstream ss;
 	ss << "Composite[";
 	for (size_t i = 0; i < transforms.size(); ++i) {
 		if (i > 0) ss << " ∘ ";
-		ss << transforms[i]->ToString();
+		ss << transforms[i]->toString();
 	}
 	ss << "]";
 	return ss.str();
 }
 
-bool CompositeTransformation::IsIdentity() const {
+bool CompositeTransformation::isIdentity() const {
 	for (const auto& t : transforms)
-		if (!t->IsIdentity()) return false;
+		if (!t->isIdentity()) return false;
 	return true;
 }
 
-std::unique_ptr<PlaneTransformation> CompositeTransformation::GetInverse() const {
+std::unique_ptr<PlaneTransformation> CompositeTransformation::getInverse() const {
 	auto inv = std::make_unique<CompositeTransformation>();
 	for (auto it = transforms.rbegin(); it != transforms.rend(); ++it)
-		inv->AddTransformation((*it)->GetInverse());
+		inv->AddTransformation((*it)->getInverse());
 	return inv;
 }
