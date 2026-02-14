@@ -2,45 +2,45 @@
 
 AdvancedMath is a modern C++ library for advanced mathematical computations, providing convenient and efficient tools for working with complex numbers, linear algebra, mathematical analysis, and computational geometry.
 
-## 🚀 Features
+## Features
 
-### ✅ Implemented
+### Implemented
 
 · Complex numbers (algebraic + trigonometric forms)
 · Affine transformations
 · Homothety transformations
 · High-performance operations
 
-### 🔄 In Development
+### In Development
 
 · Matrices and Linear Algebra - matrix operations, determinants, inverse matrices
 · Mathematical Analysis - numerical integration, differentiation
 · Computational Geometry - barycentric coordinates, geometric transformations
 · Additional Mathematical Structures - quaternions, tensors
 
-## 🌟 Key Features
+## Key Features
 
-### 🧮 Complex Numbers
+### Complex Numbers
 - **Dual Representation**: Algebraic form (`Complex`) and trigonometric form (`ComplexTrigonometric`)
 - **High Performance**: Optimized operations for each representation
 - **Full Arithmetic**: All basic operations (+, -, *, /) with operator overloading
 - **Mathematical Functions**: Magnitude, phase, conjugate, roots, exponentiation
 - **Seamless Conversion**: Easy switching between representations
 
-### 📐 Geometric Transformations
+### Geometric Transformations
 - **Affine Transformations**: Translation, rotation, scaling, shearing
 - **Homothety**: Scaling transformations with custom centers
 - **Composition**: Combine multiple transformations
 - **Inverse Operations**: Compute reverse transformations
 - **Efficient Application**: Apply to both algebraic and trigonometric forms
 
-### 🎯 Performance Optimized
+### Performance Optimized
 - **Trigonometric Form**: O(1) multiplication, division, exponentiation
 - **Matrix Operations**: Efficient affine transformation composition
 - **Minimal Overhead**: Optimized for scientific computing
 - **Dual Representation**: Choose the best form for your use case
 
-### 🛠 Technical Features
+### Technical Features
 
 · Pure C++17 - modern language features
 · Template-based design - support for various numeric types
@@ -50,7 +50,7 @@ AdvancedMath is a modern C++ library for advanced mathematical computations, pro
 · Fully documented code - clear API
 · Mathematical constants - built-in support for π and other constants
 
-### 🎯 Project Goals
+### Project Goals
 
 · Create a universal mathematical library for scientific computations
 · Provide intuitive API for complex mathematical operations
@@ -59,7 +59,7 @@ AdvancedMath is a modern C++ library for advanced mathematical computations, pro
 · Become a useful tool for students, researchers, and developers
 · Optimize operations by choosing the most efficient representation
 
-### 🔬 Use Cases
+### Use Cases
 
 The trigonometric form is particularly useful for:
 
