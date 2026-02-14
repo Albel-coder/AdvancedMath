@@ -11,69 +11,69 @@ class PlaneTransformation
 {
 public:
 	virtual ~PlaneTransformation() = default;
-	virtual Complex ApplyTo(const Complex& Point) const = 0;
-	virtual std::string ToString() const = 0;
-	virtual bool IsIdentity() const = 0;
-	virtual std::unique_ptr<PlaneTransformation> GetInverse() const = 0;
-	virtual std::unique_ptr<PlaneTransformation> ComposeWith(const PlaneTransformation& Other) const = 0;
+	virtual Complex applyTo(const Complex& point) const = 0;
+	virtual std::string toString() const = 0;
+	virtual bool isIdentity() const = 0;
+	virtual std::unique_ptr<PlaneTransformation> getInverse() const = 0;
+	virtual std::unique_ptr<PlaneTransformation> composeWith(const PlaneTransformation& other) const = 0;
 };
 
 class Homothety : public PlaneTransformation
 {
 private:
-	Complex Center;
-	double Coefficient;
+	Complex center;
+	double coefficient;
 
 public:
-	Homothety(const Complex& ComplexNumber = Complex(0.0, 0.0), double K = 1.0);
-	Homothety(double CenterX, double CenterY, double K);
+	Homothety(const Complex& complexNumber = Complex(0.0, 0.0), double k = 1.0);
+	Homothety(double centerX, double centerY, double k);
 
 	// Basic getters/setters
-	Complex GetCenter() const;
-	double GetCoefficient() const;
-	void SetCenter(const Complex& ComplexNumber);
-	void SetCenter(double X, double Y);
-	void SetCoefficient(double K);
+	Complex getCenter() const;
+	double getCoefficient() const;
+	void setCenter(const Complex& complexNumber);
+	void setCenter(double x, double y);
+	void setCoefficient(double k);
 
 	// Transformation methods
-	Complex ApplyTo(const Complex& Point) const override;
-	Homothety ComposeWith(const Homothety& Other) const;
-	Homothety getInverse() const;
-	Homothety RaisedTo(int Number) const;
+	Complex applyTo(const Complex& point) const override;
+	Homothety composeWith(const Homothety& other) const;
+	Homothety getInverse();
+	Homothety raisedTo(int number) const;
 
 	// New advanced methods
-	bool IsExpansion() const;      // k > 1
-	bool IsContraction() const;    // 0 < k < 1
-	bool IsReflection() const;     // k < 0
-	bool IsIdentity() const override;
+	bool isExpansion() const;      // k > 1
+	bool isContraction() const;    // 0 < k < 1
+	bool isReflection() const;     // k < 0
+	bool isIdentity() const override;
 
-	double GetScaleFactor() const;
-	Complex GetFixedPointers() const; // Returns fixed points
+	double getScaleFactor() const;
+	Complex getFixedPointers() const; // Returns fixed points
 
 	// Apply to geometric objects
-	std::vector<Complex> ApplyToPolygon(const std::vector<Complex>& Polygon) const;
-	std::pair<Complex, double> ApplyToCircle(const Complex& Center, double Radius) const;
+	std::vector<Complex> applyToPolygon(const std::vector<Complex>& polygon) const;
+	std::pair<Complex, double> applyToCircle(const Complex& center, double radius) const;
 
 	// Static factory methods
-	static Homothety FromScaleFactor(double Scale);
-	static Homothety FromFixedPointAndImage(const Complex& FixedPoint, const Complex& ImagePoint);
+	static Homothety fromScaleFactor(double scale);
+	static Homothety fromFixedPointAndImage(const Complex& fixedPoint, const Complex& imagePoint);
 
 	// PlaneTransformation interface
-	std::unique_ptr<PlaneTransformation> GetInverse() const override;
-	std::unique_ptr<PlaneTransformation> ComposeWith(const PlaneTransformation& Other) const override;
+	std::unique_ptr<PlaneTransformation> getInverse() const override;
+	std::unique_ptr<PlaneTransformation> composeWith(const PlaneTransformation& other) const override;
 
 	// Operators
-	bool operator==(const Homothety& OtherNumber) const;
-	bool operator!=(const Homothety& OtherNumber) const;
-	Homothety operator*(const Homothety& OtherNumber) const;
+	bool operator==(const Homothety& otherNumber) const;
+	bool operator!=(const Homothety& otherNumber) const;
+	Homothety operator*(const Homothety& otherNumber) const;
 
-	std::string ToString() const override;
+	std::string toString() const override;
 
-	static Homothety FromTwoPairs(const Complex& A, const Complex& A1,
-		const Complex& B, const Complex& B1);
+	static Homothety fromTwoPairs(const Complex& a, const Complex& a1,
+		const Complex& b, const Complex& b1);
 };
 
-std::ostream& operator<<(std::ostream& Output, const Homothety& H);
+std::ostream& operator<<(std::ostream& output, const Homothety& h);
 
 class AffineTransform : public PlaneTransformation
 {
@@ -113,13 +113,13 @@ public:
 	static AffineTransform FromBasisVectors(const Complex& FirstE, const Complex& SecondE, const Complex& Origin = Complex(0.0, 0.0));
 
 	// Transformation methods
-	Complex ApplyTo(const Complex& Point) const override;
+	Complex applyTo(const Complex& Point) const override;
 	AffineTransform ComposeWith(const AffineTransform& Other) const;
 	AffineTransform operator*(const AffineTransform& Other) const;
 	AffineTransform Inverse() const;
 
 	// New advanced methods
-	bool IsIdentity() const override;
+	bool isIdentity() const override;
 	bool IsIsometry() const;
 	bool IsSimilarity() const;    // Keeping the angles
 	bool IsEquiareal() const;     // We preserve space
@@ -165,8 +165,8 @@ public:
 	static AffineTransform Lerp(const AffineTransform& A, const AffineTransform& B, double t);
 
 	// PlaneTransformation interface
-	std::unique_ptr<PlaneTransformation> GetInverse() const override;
-	std::unique_ptr<PlaneTransformation> ComposeWith(const PlaneTransformation& Other) const override;
+	std::unique_ptr<PlaneTransformation> getInverse() const override;
+	std::unique_ptr<PlaneTransformation> composeWith(const PlaneTransformation& Other) const override;
 
 	// Getters
 	void GetMatrix(double& Matrix11, double& Matrix12, double& Matrix13,
@@ -174,7 +174,7 @@ public:
 	void GetLinearPart(double& Matrix11, double& Matrix12, double& Matrix21, double& Matrix22) const;
 	void GetTranslation(double& tx, double& ty) const;
 
-	std::string ToString() const override;
+	std::string toString() const override;
 	std::string ToMatrixString() const;
 
 	bool operator==(const AffineTransform& Other) const;
@@ -187,11 +187,11 @@ public:
 		std::vector<std::unique_ptr<PlaneTransformation>> transforms;
 	public:
 		void AddTransformation(std::unique_ptr<PlaneTransformation> t);
-		Complex ApplyTo(const Complex& Point) const override;
-		std::string ToString() const override;
-		bool IsIdentity() const override;
-		std::unique_ptr<PlaneTransformation> GetInverse() const override;
-		std::unique_ptr<PlaneTransformation> ComposeWith(const PlaneTransformation& Other) const override;
+		Complex applyTo(const Complex& Point) const override;
+		std::string toString() const override;
+		bool isIdentity() const override;
+		std::unique_ptr<PlaneTransformation> getInverse() const override;
+		std::unique_ptr<PlaneTransformation> composeWith(const PlaneTransformation& Other) const override;
 	};
 
 	std::ostream& operator<<(std::ostream& Output, const AffineTransform& Transform);
