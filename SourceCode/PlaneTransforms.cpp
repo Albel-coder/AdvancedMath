@@ -523,139 +523,123 @@ AffineTransform AffineTransform::transpose() const {
 		matrix12, matrix22, matrix23);
 }
 
-double AffineTransform::Trace() const
-{
-	return Matrix11 + Matrix22;
+double AffineTransform::trace() const {
+	return matrix11 + matrix22;
 }
 
-double AffineTransform::Determinant() const
-{
-	return Matrix11 * Matrix22 - Matrix12 * Matrix21;
+double AffineTransform::determinant() const {
+	return matrix11 * matrix22 - matrix12 * matrix21;
 }
 
-AffineTransform AffineTransform::Adjugate() const
-{
-	return AffineTransform(Matrix22, -Matrix12, Matrix12 * Matrix23 - Matrix22 * Matrix13,
-		-Matrix21, Matrix11, Matrix21 * Matrix13 - Matrix11 * Matrix23);
+AffineTransform AffineTransform::adjugate() const {
+	return AffineTransform(matrix22, -matrix12, matrix12 * matrix23 - matrix22 * matrix13,
+		-matrix21, matrix11, matrix21 * matrix13 - matrix11 * matrix23);
 }
 
-AffineTransform AffineTransform::Power(int n) const
-{
-	if (n == 0) return Identity();
+AffineTransform AffineTransform::power(int n) const {
+	if (n == 0) return identity();
 	if (n == 1) return *this;
-	if (n < 0) return Inverse().Power(-n);
+	if (n < 0) return inverse().power(-n);
 
-	AffineTransform result = Identity();
+	AffineTransform result = identity();
 	AffineTransform base = *this;
 
-	while (n > 0) 
-	{
-		if (n % 2 == 1) 
-		{
-			result = result.ComposeWith(base);
+	while (n > 0) {
+		if (n % 2 == 1) {
+			result = result.composeWith(base);
 		}
-		base = base.ComposeWith(base);
+		base = base.composeWith(base);
 		n /= 2;
 	}
 
 	return result;
 }
 
-AffineTransform AffineTransform::Lerp(const AffineTransform& a, const AffineTransform& b, double t)
-{
+AffineTransform AffineTransform::lerp(const AffineTransform& a, const AffineTransform& b, double t) {
 	return AffineTransform(
-		a.Matrix11 + t * (b.Matrix11 - a.Matrix11),
-		a.Matrix12 + t * (b.Matrix12 - a.Matrix12),
-		a.Matrix13 + t * (b.Matrix13 - a.Matrix13),
-		a.Matrix21 + t * (b.Matrix21 - a.Matrix21),
-		a.Matrix22 + t * (b.Matrix22 - a.Matrix22),
-		a.Matrix23 + t * (b.Matrix23 - a.Matrix23)
+		a.matrix11 + t * (b.matrix11 - a.matrix11),
+		a.matrix12 + t * (b.matrix12 - a.matrix12),
+		a.matrix13 + t * (b.matrix13 - a.matrix13),
+		a.matrix21 + t * (b.matrix21 - a.matrix21),
+		a.matrix22 + t * (b.matrix22 - a.matrix22),
+		a.matrix23 + t * (b.matrix23 - a.matrix23)
 	);
 }
 
-std::unique_ptr<PlaneTransformation> AffineTransform::getInverse() const
-{
-	return std::make_unique<AffineTransform>(Inverse());
+std::unique_ptr<PlaneTransformation> AffineTransform::getInverse() const {
+	return std::make_unique<AffineTransform>(inverse());
 }
 
-std::unique_ptr<PlaneTransformation> AffineTransform::composeWith(const PlaneTransformation& other) const
-{
-	if (const AffineTransform* otherAffine = dynamic_cast<const AffineTransform*>(&other)) 
-	{
-		return std::make_unique<AffineTransform>(ComposeWith(*otherAffine));
+std::unique_ptr<PlaneTransformation> AffineTransform::composeWith(const PlaneTransformation& other) const {
+	if (const AffineTransform* otherAffine = dynamic_cast<const AffineTransform*>(&other)) {
+		return std::make_unique<AffineTransform>(composeWith(*otherAffine));
 	}
 	auto composite = std::make_unique<CompositeTransformation>();
-	composite->AddTransformation(std::make_unique<AffineTransform>(*this));
-	composite->AddTransformation(other.getInverse()->getInverse());
+	composite->addTransformation(std::make_unique<AffineTransform>(*this));
+	composite->addTransformation(other.getInverse()->getInverse());
 
 	return composite;
 }
 
-void AffineTransform::GetMatrix(double& a11, double& a12, double& a13,
-	double& a21, double& a22, double& a23) const
-{
-	a11 = Matrix11; a12 = Matrix12; a13 = Matrix13;
-	a21 = Matrix21; a22 = Matrix22; a23 = Matrix23;
+void AffineTransform::getMatrix(double& a11, double& a12, double& a13, double& a21, double& a22, double& a23) const {
+	a11 = matrix11; a12 = matrix12; a13 = matrix13;
+	a21 = matrix21; a22 = matrix22; a23 = matrix23;
 }
 
-void AffineTransform::GetLinearPart(double& a11, double& a12, double& a21, double& a22) const
-{
-	a11 = Matrix11; a12 = Matrix12;
-	a21 = Matrix21; a22 = Matrix22;
+void AffineTransform::getLinearPart(double& a11, double& a12, double& a21, double& a22) const {
+	a11 = matrix11; a12 = matrix12;
+	a21 = matrix21; a22 = matrix22;
 }
 
-void AffineTransform::GetTranslation(double& tx, double& ty) const
-{
-	tx = Matrix13; ty = Matrix23;
+void AffineTransform::getTranslation(double& tx, double& ty) const {
+	tx = matrix13; ty = matrix23;
 }
 
-std::string AffineTransform::toString() const
-{
+std::string AffineTransform::toString() const {
 	std::stringstream ss;
 	ss << "AffineTransform(["
-		<< Matrix11 << ", " << Matrix12 << ", " << Matrix13 << "], ["
-		<< Matrix21 << ", " << Matrix22 << ", " << Matrix23 << "])";
+		<< matrix11 << ", " << matrix12 << ", " << matrix13 << "], ["
+		<< matrix21 << ", " << matrix22 << ", " << matrix23 << "])";
+
 	return ss.str();
 }
 
-std::string AffineTransform::ToMatrixString() const
-{
+std::string AffineTransform::toMatrixString() const {
 	std::stringstream ss;
-	ss << "[[" << Matrix11 << ", " << Matrix12 << ", " << Matrix13 << "],\n"
-		<< " [" << Matrix21 << ", " << Matrix22 << ", " << Matrix23 << "]]";
+	ss << "[[" << matrix11 << ", " << matrix12 << ", " << matrix13 << "],\n"
+		<< " [" << matrix21 << ", " << matrix22 << ", " << matrix23 << "]]";
+
 	return ss.str();
 }
 
-bool AffineTransform::operator==(const AffineTransform& other) const
-{
-	return std::abs(Matrix11 - other.Matrix11) < 1e-10 &&
-		std::abs(Matrix12 - other.Matrix12) < 1e-10 &&
-		std::abs(Matrix13 - other.Matrix13) < 1e-10 &&
-		std::abs(Matrix21 - other.Matrix21) < 1e-10 &&
-		std::abs(Matrix22 - other.Matrix22) < 1e-10 &&
-		std::abs(Matrix23 - other.Matrix23) < 1e-10;
+bool AffineTransform::operator==(const AffineTransform& other) const {
+	return std::abs(matrix11 - other.matrix11) < 1e-10 &&
+		std::abs(matrix12 - other.matrix12) < 1e-10 &&
+		std::abs(matrix13 - other.matrix13) < 1e-10 &&
+		std::abs(matrix21 - other.matrix21) < 1e-10 &&
+		std::abs(matrix22 - other.matrix22) < 1e-10 &&
+		std::abs(matrix23 - other.matrix23) < 1e-10;
 }
 
-bool AffineTransform::operator!=(const AffineTransform& other) const
-{
+bool AffineTransform::operator!=(const AffineTransform& other) const {
 	return !(*this == other);
 }
 
-std::ostream& operator<<(std::ostream& Output, const AffineTransform& Transform)
-{
-	Output << Transform.toString();
-	return Output;
+std::ostream& operator<<(std::ostream& output, const AffineTransform& transform) {
+	output << transform.toString();
+	return output;
 }
 
 
-void CompositeTransformation::AddTransformation(std::unique_ptr<PlaneTransformation> t) {
+void CompositeTransformation::addTransformation(std::unique_ptr<PlaneTransformation> t) {
 	transforms.push_back(std::move(t));
 }
 
-Complex CompositeTransformation::applyTo(const Complex& Point) const {
-	Complex result = Point;
+Complex CompositeTransformation::applyTo(const Complex& point) const {
+	Complex result = point;
 	for (const auto& t : transforms)
 		result = t->applyTo(result);
+
 	return result;
 }
 
@@ -667,6 +651,7 @@ std::string CompositeTransformation::toString() const {
 		ss << transforms[i]->toString();
 	}
 	ss << "]";
+
 	return ss.str();
 }
 
@@ -679,6 +664,6 @@ bool CompositeTransformation::isIdentity() const {
 std::unique_ptr<PlaneTransformation> CompositeTransformation::getInverse() const {
 	auto inv = std::make_unique<CompositeTransformation>();
 	for (auto it = transforms.rbegin(); it != transforms.rend(); ++it)
-		inv->AddTransformation((*it)->getInverse());
+		inv->addTransformation((*it)->getInverse());
 	return inv;
 }
