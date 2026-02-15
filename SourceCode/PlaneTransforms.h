@@ -120,11 +120,11 @@ public:
 
 	// New advanced methods
 	bool isIdentity() const override;
-	bool IsIsometry() const;
-	bool IsSimilarity() const;    // Keeping the angles
-	bool IsEquiareal() const;     // We preserve space
-	bool IsDirect() const;        // Maintaining orientation
-	bool IsInvolutory() const;    // T^2 = Identity
+	bool isIsometry() const;
+	bool isSimilarity() const;    // Keeping the angles
+	bool isEquiareal() const;     // We preserve space
+	bool isDirect() const;        // Maintaining orientation
+	bool isInvolutory() const;    // T^2 = Identity
 
 	// Geometric properties
 	Complex getTranslation() const;
@@ -158,7 +158,7 @@ public:
 	AffineTransform adjugate() const;
 
 	// Power and exponential
-	AffineTransform power(int Number) const;
+	AffineTransform power(int number) const;
 	AffineTransform exponential() const;
 
 	// Interpolation
@@ -186,12 +186,12 @@ public:
 	private:
 		std::vector<std::unique_ptr<PlaneTransformation>> transforms;
 	public:
-		void AddTransformation(std::unique_ptr<PlaneTransformation> t);
-		Complex applyTo(const Complex& Point) const override;
+		void addTransformation(std::unique_ptr<PlaneTransformation> t);
+		Complex applyTo(const Complex& point) const override;
 		std::string toString() const override;
 		bool isIdentity() const override;
 		std::unique_ptr<PlaneTransformation> getInverse() const override;
-		std::unique_ptr<PlaneTransformation> composeWith(const PlaneTransformation& Other) const override;
+		std::unique_ptr<PlaneTransformation> composeWith(const PlaneTransformation& other) const override;
 	};
 
-	std::ostream& operator<<(std::ostream& Output, const AffineTransform& Transform);
+	std::ostream& operator<<(std::ostream& output, const AffineTransform& transform);
