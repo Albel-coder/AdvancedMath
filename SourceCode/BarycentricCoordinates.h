@@ -1,4 +1,4 @@
-?#include "Complex.h"
+#include "Complex.h"
 
 const double PI = 3.1415926535897932;
 
@@ -7,13 +7,13 @@ class BarycentricCoordinates
 
 private:
 
-    double Alpha, Beta, Gamma; // Barycentric Coordinates (?, ?, ?)
+    double alpha, beta, gamma; // Barycentric Coordinates (?, ?, ?)
 
 public:
 
     // Constructors
     BarycentricCoordinates(double a = 0.0, double b = 0.0, double c = 0.0)
-        : Alpha(a), Beta(b), Gamma(c) {
+        : alpha(a), beta(b), gamma(c) {
     }
 
     // Creation from Cartesian coordinates relative to a triangle
@@ -27,11 +27,11 @@ public:
         Complex v1 = C - A;
         Complex v2 = point - A;
 
-        double d00 = v0.GetReal() * v0.GetReal() + v0.GetImag() * v0.GetImag();
-        double d01 = v0.GetReal() * v1.GetReal() + v0.GetImag() * v1.GetImag();
-        double d11 = v1.GetReal() * v1.GetReal() + v1.GetImag() * v1.GetImag();
-        double d20 = v2.GetReal() * v0.GetReal() + v2.GetImag() * v0.GetImag();
-        double d21 = v2.GetReal() * v1.GetReal() + v2.GetImag() * v1.GetImag();
+        double d00 = v0.getReal() * v0.getReal() + v0.getImag() * v0.getImag();
+        double d01 = v0.getReal() * v1.getReal() + v0.getImag() * v1.getImag();
+        double d11 = v1.getReal() * v1.getReal() + v1.getImag() * v1.getImag();
+        double d20 = v2.getReal() * v0.getReal() + v2.getImag() * v0.getImag();
+        double d21 = v2.getReal() * v1.getReal() + v2.getImag() * v1.getImag();
 
         double denom = d00 * d11 - d01 * d01;
 
@@ -75,76 +75,76 @@ public:
     }
 
     // Getters
-    double getAlpha() const { return Alpha; }
-    double getBeta() const { return Beta; }
-    double getGamma() const { return Gamma; }
+    double getAlpha() const { return alpha; }
+    double getBeta() const { return beta; }
+    double getGamma() const { return gamma; }
 
     // Setters
-    void setAlpha(double a) { Alpha = a; }
-    void setBeta(double b) { Beta = b; }
-    void setGamma(double g) { Gamma = g; }
+    void setAlpha(double a) { alpha = a; }
+    void setBeta(double b) { beta = b; }
+    void setGamma(double g) { gamma = g; }
 
     // Normalization (sum of coordinates = 1)
     BarycentricCoordinates normalized() const
     {
-        double sum = Alpha + Beta + Gamma;
+        double sum = alpha + beta + gamma;
         if (std::abs(sum) < 1e-10)
         {
             throw std::runtime_error("Cannot normalize barycentric coordinates with zero sum");
         }
-        return BarycentricCoordinates(Alpha / sum, Beta / sum, Gamma / sum);
+        return BarycentricCoordinates(alpha / sum, beta / sum, gamma / sum);
     }
 
     // Validation check
     bool isValid() const
     {
-        return Alpha >= 0.0 && Beta >= 0.0 && Gamma >= 0.0;
+        return alpha >= 0.0 && beta >= 0.0 && gamma >= 0.0;
     }
 
     bool isInsideTriangle() const
     {
-        return isValid() && std::abs(Alpha + Beta + Gamma - 1.0) < 1e-10;
+        return isValid() && std::abs(alpha + beta + gamma - 1.0) < 1e-10;
     }
 
     bool isOnEdge() const
     {
-        return isValid() && (std::abs(Alpha) < 1e-10 ||
-            std::abs(Beta) < 1e-10 ||
-            std::abs(Gamma) < 1e-10);
+        return isValid() && (std::abs(alpha) < 1e-10 ||
+            std::abs(beta) < 1e-10 ||
+            std::abs(gamma) < 1e-10);
     }
 
     bool isOnVertex() const
     {
-        return (std::abs(Alpha - 1.0) < 1e-10 && std::abs(Beta) < 1e-10 && std::abs(Gamma) < 1e-10) ||
-            (std::abs(Beta - 1.0) < 1e-10 && std::abs(Alpha) < 1e-10 && std::abs(Gamma) < 1e-10) ||
-            (std::abs(Gamma - 1.0) < 1e-10 && std::abs(Alpha) < 1e-10 && std::abs(Beta) < 1e-10);
+        return (std::abs(alpha - 1.0) < 1e-10 && std::abs(beta) < 1e-10 && std::abs(gamma) < 1e-10) ||
+            (std::abs(beta - 1.0) < 1e-10 && std::abs(alpha) < 1e-10 && std::abs(gamma) < 1e-10) ||
+            (std::abs(gamma - 1.0) < 1e-10 && std::abs(alpha) < 1e-10 && std::abs(beta) < 1e-10);
     }
 
     // Transformation to Cartesian coordinates{
-    Complex toCartesian(const Complex& A, const Complex& B, const Complex& C) const
+    Complex toCartesian(const Complex& a, const Complex& b, const Complex& c) const
     {
-        return A * Alpha + B * Beta + C * Gamma;
+        return a * alpha + b * beta + c * gamma;
     }
 
     // Arithmetic operations
     BarycentricCoordinates operator+(const BarycentricCoordinates& other) const
     {
-        return BarycentricCoordinates(Alpha + other.Alpha,
-            Beta + other.Beta,
-            Gamma + other.Gamma);
+        return BarycentricCoordinates(alpha + other.alpha,
+            beta + other.beta,
+            gamma + other.gamma);
     }
 
     BarycentricCoordinates operator-(const BarycentricCoordinates& other) const
     {
-        return BarycentricCoordinates(Alpha - other.Alpha,
-            Beta - other.Beta,
-            Gamma - other.Gamma);
+        return BarycentricCoordinates(alpha - other.alpha,
+            beta - other.beta,
+            gamma - other.gamma);
     }
 
     BarycentricCoordinates operator*(double scalar) const {
-        return BarycentricCoordinates(Alpha * scalar,
-            Beta * scalar,
-            Gamma * scalar);
+        return BarycentricCoordinates(alpha * scalar,
+            beta * scalar,
+            gamma * scalar);
     }
 
     BarycentricCoordinates operator/(double scalar) const
@@ -153,33 +153,33 @@ public:
         {
             throw std::runtime_error("Division by zero in barycentric coordinates");
         }
-        return BarycentricCoordinates(Alpha / scalar,
-            Beta / scalar,
-            Gamma / scalar);
+        return BarycentricCoordinates(alpha / scalar,
+            beta / scalar,
+            gamma / scalar);
     }
 
     // Assignment Operators
     BarycentricCoordinates& operator+=(const BarycentricCoordinates& other)
     {
-        Alpha += other.Alpha;
-        Beta += other.Beta;
-        Gamma += other.Gamma;
+        alpha += other.alpha;
+        beta += other.beta;
+        gamma += other.gamma;
         return *this;
     }
 
     BarycentricCoordinates& operator-=(const BarycentricCoordinates& other)
     {
-        Alpha -= other.Alpha;
-        Beta -= other.Beta;
-        Gamma -= other.Gamma;
+        alpha -= other.alpha;
+        beta -= other.beta;
+        gamma -= other.gamma;
         return *this;
     }
 
     BarycentricCoordinates& operator*=(double scalar)
     {
-        Alpha *= scalar;
-        Beta *= scalar;
-        Gamma *= scalar;
+        alpha *= scalar;
+        beta *= scalar;
+        gamma *= scalar;
         return *this;
     }
 
@@ -189,9 +189,9 @@ public:
         {
             throw std::runtime_error("Division by zero in barycentric coordinates");
         }
-        Alpha /= scalar;
-        Beta /= scalar;
-        Gamma /= scalar;
+        alpha /= scalar;
+        beta /= scalar;
+        gamma /= scalar;
         return *this;
     }
 
@@ -219,7 +219,7 @@ public:
         std::vector<double> result(colorA.size());
         for (size_t i = 0; i < colorA.size(); ++i)
         {
-            result[i] = coords.Alpha * colorA[i] + coords.Beta * colorB[i] + coords.Gamma * colorC[i];
+            result[i] = coords.alpha * colorA[i] + coords.beta * colorB[i] + coords.gamma * colorC[i];
         }
         return result;
     }
@@ -227,9 +227,9 @@ public:
     // Distance between barycentric coordinates
     double distanceTo(const BarycentricCoordinates& other) const
     {
-        double da = Alpha - other.Alpha;
-        double db = Beta - other.Beta;
-        double dg = Gamma - other.Gamma;
+        double da = alpha - other.alpha;
+        double db = beta - other.beta;
+        double dg = gamma - other.gamma;
         return std::sqrt(da * da + db * db + dg * dg);
     }
 
@@ -242,9 +242,9 @@ public:
     // Comparison Operators
     bool operator==(const BarycentricCoordinates& other) const
     {
-        return std::abs(Alpha - other.Alpha) < 1e-10 &&
-            std::abs(Beta - other.Beta) < 1e-10 &&
-            std::abs(Gamma - other.Gamma) < 1e-10;
+        return std::abs(alpha - other.alpha) < 1e-10 &&
+            std::abs(beta - other.beta) < 1e-10 &&
+            std::abs(gamma - other.gamma) < 1e-10;
     }
 
     bool operator!=(const BarycentricCoordinates& other) const
@@ -256,18 +256,18 @@ public:
     std::string toString() const
     {
         return "Barycentric(" +
-            std::to_string(Alpha) + ", " +
-            std::to_string(Beta) + ", " +
-            std::to_string(Gamma) + ")";
+            std::to_string(alpha) + ", " +
+            std::to_string(beta) + ", " +
+            std::to_string(gamma) + ")";
     }
 
     // Checking special provisions
     bool isCentroid() const
     {
         auto norm = this->normalized();
-        return std::abs(norm.Alpha - 1.0 / 3.0) < 1e-10 &&
-            std::abs(norm.Beta - 1.0 / 3.0) < 1e-10 &&
-            std::abs(norm.Gamma - 1.0 / 3.0) < 1e-10;
+        return std::abs(norm.alpha - 1.0 / 3.0) < 1e-10 &&
+            std::abs(norm.beta - 1.0 / 3.0) < 1e-10 &&
+            std::abs(norm.gamma - 1.0 / 3.0) < 1e-10;
     }
 };
 
