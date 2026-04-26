@@ -2,7 +2,6 @@
 
 const double PI = 3.1415926535897932;
 
-// Static constants
 const Complex Complex::zero(0.0, 0.0);
 const Complex Complex::one(1.0, 0.0);
 const Complex Complex::i(0.0, 0.1);
@@ -79,21 +78,18 @@ Complex& Complex::operator=(const Complex& otherNumber) {
         real = otherNumber.real;
         imag = otherNumber.imag;
     }
-
     return *this;
 }
 
 Complex& Complex::operator+=(const Complex& otherNumber) {
     real += otherNumber.real;
     imag += otherNumber.imag;
-
     return *this;
 }
 
 Complex& Complex::operator-=(const Complex& otherNumber) {
     real -= otherNumber.real;
     imag -= otherNumber.imag;
-
     return *this;
 }
 
@@ -102,7 +98,6 @@ Complex& Complex::operator*=(const Complex& otherNumber) {
     double newImag = real * otherNumber.imag + imag * otherNumber.real;
     real = newReal;
     imag = newImag;
-
     return *this;
 }
 
@@ -110,7 +105,6 @@ Complex& Complex::operator/=(const Complex& otherNumber) {
     if (otherNumber != 0) {
         *this = *this / otherNumber;
     }
-
     return *this;
 }
 
@@ -123,7 +117,6 @@ Complex Complex::operator-() {
     return Complex(-real, -imag);
 }
 
-// Increment/decrement operators
 Complex& Complex::operator++() { // Prefix
     ++real;
     return *this;
@@ -146,7 +139,6 @@ Complex Complex::operator--(int) { // Postfix
     return temp;
 }
 
-// Access Methods
 double Complex::getReal() const {
     return real;
 }
@@ -163,7 +155,6 @@ void Complex::setImage(double imageNumber) {
     imag = imageNumber;
 }
 
-// Basic mathematical operations
 double Complex::magnitude() const {
     return std::sqrt(real * real + imag * imag);
 }
@@ -180,7 +171,6 @@ double Complex::magnitudeSqr() const {
     return real * real + imag * imag;
 }
 
-// Obtaining components in polar form
 double Complex::getMagnitude() const {
     return magnitude();
 }
@@ -189,12 +179,10 @@ double Complex::getPhase() const {
     return phase();
 }
 
-// Phase in degrees
 double Complex::getPhaseDegrees() const {
     return phase() * 180.0 / PI;
 }
 
-// Setting a value using polar coordinates
 void Complex::setPolar(double magnitude, double phase) {
     real = magnitude * std::cos(phase);
     imag = magnitude * std::sin(phase);
@@ -366,23 +354,18 @@ Complex Complex::atanh() const {
     }
 }
 
-// =====Helper Methods=====
-// Checking for a real number
 bool Complex::isReal() const {
     return imag == 0.0;
 }
 
-// Testing for a purely imaginary number
 bool Complex::isImaginary() const {
     return real == 0.0 && imag != 0.0;
 }
 
-// Checking for zero
 bool Complex::isZero() const {
     return real == 0.0 && imag == 0.0;
 }
 
-// Limb check
 bool Complex::isFinite() const {
     return std::isfinite(real) && std::isfinite(imag);
 }
@@ -498,7 +481,6 @@ Complex operator/(double ihs, const Complex rhs) {
     }
 }
 
-// Streaming output
 std::ostream& operator<<(std::ostream& output, const Complex& complexNumber) {
     output << complexNumber.toString();
     return output;

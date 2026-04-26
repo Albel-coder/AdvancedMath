@@ -100,11 +100,11 @@ public:
     Complex atanh() const; // Area hyperbolic tangent
 
     // Auxiliary methods
-    bool isReal() const;          // Checking for a real number
-    bool isImaginary() const;     // Testing for a purely imaginary number
-    bool isZero() const;          // Checking for zero
-    bool isFinite() const;        // Limb check
-    std::string toString() const; // String representation
+    bool isReal() const;
+    bool isImaginary() const;
+    bool isZero() const;
+    bool isFinite() const;
+    std::string toString() const;
 
     // Static factory methods
     static Complex fromPolar(double magnitude, double phase);
@@ -121,15 +121,13 @@ public:
 
     bool isOnUnitCircle(double tolerance = 1e-10) const;
 
-    std::string toPolarString() const;     // In polar form
-    std::string toExponentString() const;  // In exponential form
+    std::string toPolarString() const;
+    std::string toExponentString() const;
 
-    // Static constants
     static const Complex zero;
     static const Complex one;
     static const Complex i;    
 };
-
 
 // Streaming output
 std::ostream& operator<<(std::ostream& output, const Complex& complexNumber);
