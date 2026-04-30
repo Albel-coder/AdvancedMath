@@ -8,11 +8,11 @@ class Matrix
 private:
 	std::vector<double> data;
 	std::size_t rows = 0;
-	std::size_t cols = 0;
+	std::size_t columns = 0;
 
 public:
 	Matrix() = default;
-	Matrix(std::size_t rows, std::size_t cols, double init = double{});
+	Matrix(std::size_t rowsValue, std::size_t columnsValue, double init = double{});
 	Matrix(const Matrix&) = default;
 	Matrix(Matrix&&) = default;
 
@@ -22,15 +22,13 @@ public:
 	double& operator()(std::size_t i, std::size_t j);
 	const double& operator()(std::size_t i, std::size_t j) const;
 
-	std::size_t rows() const noexcept { return rows; }
-	std::size_t cols() const noexcept { return cols; }
+	std::size_t getRows() const noexcept;
+	std::size_t getColumns() const noexcept;
 
 	void random();
 
 	std::vector<double> multiply(const std::vector<double>& vector) const;
-
 	std::vector<double> multiplyTransposed(const std::vector<double>& vector) const;
-
 	static void addToVector(std::vector<double>& firstVector, const std::vector<double>& secondVector);
 
 	friend std::ostream& operator<<(std::ostream& output, const Matrix& matrix);
