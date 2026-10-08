@@ -15,36 +15,36 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="SourceCode\Complex.cpp">
+    <ClCompile Include="src\Complex.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
-    <ClCompile Include="SourceCode\PlaneTransforms.cpp">
+    <ClCompile Include="src\PlaneTransforms.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
-    <ClCompile Include="SourceCode\OrientedAngle.cpp">
+    <ClCompile Include="src\OrientedAngle.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
-    <ClCompile Include="SourceCode\BarycentricCoordinates.cpp">
+    <ClCompile Include="src\BarycentricCoordinates.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
-    <ClCompile Include="SourceCode\Matrix.cpp">
+    <ClCompile Include="src\Matrix.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="SourceCode\Complex.h">
+    <ClInclude Include="src\Complex.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="SourceCode\PlaneTransforms.h">
+    <ClInclude Include="src\PlaneTransforms.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="SourceCode\OrientedAngle.h">
+    <ClInclude Include="src\OrientedAngle.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="SourceCode\BarycentricCoordinates.h">
+    <ClInclude Include="src\BarycentricCoordinates.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="SourceCode\Matrix.h">
+    <ClInclude Include="src\Matrix.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
   </ItemGroup>

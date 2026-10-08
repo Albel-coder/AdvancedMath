@@ -19,18 +19,18 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="SourceCode\BarycentricCoordinates.cpp" />
-    <ClCompile Include="SourceCode\Complex.cpp" />
-    <ClCompile Include="SourceCode\Matrix.cpp" />
-    <ClCompile Include="SourceCode\OrientedAngle.cpp" />
-    <ClCompile Include="SourceCode\PlaneTransforms.cpp" />
+    <ClCompile Include="src\BarycentricCoordinates.cpp" />
+    <ClCompile Include="src\Complex.cpp" />
+    <ClCompile Include="src\Matrix.cpp" />
+    <ClCompile Include="src\OrientedAngle.cpp" />
+    <ClCompile Include="src\PlaneTransforms.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="SourceCode\BarycentricCoordinates.h" />
-    <ClInclude Include="SourceCode\Complex.h" />
-    <ClInclude Include="SourceCode\Matrix.h" />
-    <ClInclude Include="SourceCode\OrientedAngle.h" />
-    <ClInclude Include="SourceCode\PlaneTransforms.h" />
+    <ClInclude Include="src\BarycentricCoordinates.h" />
+    <ClInclude Include="src\Complex.h" />
+    <ClInclude Include="src\Matrix.h" />
+    <ClInclude Include="src\OrientedAngle.h" />
+    <ClInclude Include="src\PlaneTransforms.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>17.0</VCProjectVersion>
