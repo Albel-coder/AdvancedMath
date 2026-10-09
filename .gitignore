@@ -33,6 +33,3 @@ ARM64/
 
 *.bak
 *.tmp
-
-Thumbs.db
-.DS_Store
